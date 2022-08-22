@@ -14,7 +14,7 @@ enum BottomNavigationNames {
 class MyScreens {
   static var aboutScreen = AboutScreen();
   static var homeScreen = HomeScreen();
-  static var itemScreen = SearchFocus();
+  static var searchFocus = SearchFocus();
   static var likeScreen = LikeScreen();
   static var searchScreen = SearchScreen();
 }
