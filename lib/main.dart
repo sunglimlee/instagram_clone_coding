@@ -37,8 +37,8 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print(" 이것도 계속 바뀌나?"); // 아니 안바뀐다. 이렇게 작업하면 일단은 문제가 없다.
-    return /*Obx(
-      () =>*/ // Obx 가 위에 이렇게 있어야 하고.
+    return Obx(
+      () => // Obx 가 위에 이렇게 있어야 하고.
           Scaffold(
 /*
         appBar: AppBar(
@@ -53,36 +53,32 @@ class MyHomePage extends StatelessWidget {
 
         ),
 */
-        bottomNavigationBar: Obx(() =>
-          BottomNavigationBar(
-            onTap: (index)=> bottomNavigationBarOnTap(context, index),
-            currentIndex: currentIndex(),
-            // 값을 불러와야 하는데.
-            elevation: 0,
-            type: BottomNavigationBarType.fixed,
-            items: bottomNavigationBarItemList(),
-          ),
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: (index)=> bottomNavigationBarOnTap(context, index),
+          currentIndex: currentIndex(),
+          // 값을 불러와야 하는데.
+          elevation: 0,
+          type: BottomNavigationBarType.fixed,
+          items: bottomNavigationBarItemList(),
         ),
-        body: Obx(() => // Obx 로 감싼다는 말은 자동으로 변경이 되게 하겠다는 뜻이지.
-          IndexedStack(index: bottomNavigationBarController.rxTabIndex.value.index,
-          children: [
-            Container(child: const HomeScreen(),),
-            Container(child: SearchScreen(),),
-            Container(child:
-              Navigator( // 지금 이건 Navigator 가 감싸준거잖아...
-                key: bottomNavigationBarController.searchFocusNavigationKey,
-                onGenerateRoute: (routeSettings) {
-                  return MaterialPageRoute(builder: (context) {
-                    return const SearchFocus();
-                  });
-                },
-              ),
-              ),
-            Container(child: const LikeScreen()),
-            Container(child: const AboutScreen(),),
-          ],),
-        ), // 뭐! 모든게 문제네.. body 하나하는데도 이렇게 시간이 걸린다니.. // 이거 만들때마다 바뀌게 될까?
-   //   ),
+        body: IndexedStack(index: bottomNavigationBarController.rxTabIndex.value.index,
+        children: [
+          Container(child: const HomeScreen(),),
+          Container(child: SearchScreen(),),
+          Container(child:
+            Navigator( // 지금 이건 Navigator 가 감싸준거잖아...
+              key: bottomNavigationBarController.searchFocusNavigationKey,
+              onGenerateRoute: (routeSettings) {
+                return MaterialPageRoute(builder: (context) {
+                  return const SearchFocus();
+                });
+              },
+            ),
+            ),
+          Container(child: const LikeScreen()),
+          Container(child: const AboutScreen(),),
+        ],), // 뭐! 모든게 문제네.. body 하나하는데도 이렇게 시간이 걸린다니.. // 이거 만들때마다 바뀌게 될까?
+      ),
     );
   }
 
@@ -109,7 +105,7 @@ class MyHomePage extends StatelessWidget {
       case BottomNavigationNames.ITEM:
         {
             //return MyScreens.searchFocus;
-            return SearchFocus();
+            return SearchFocus() ;
             // 실컷 작업했는데 결국은 static 으로 만드니깐 아무문제 없이 계속 유지가 된다.
 /*
             return Navigator( // 여기를 감싸주어서 이게 계속 유지가 되고 있는거네..
