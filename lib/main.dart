@@ -5,7 +5,9 @@ import 'package:instagram_clone_coding/pages/about_screen.dart';
 import 'package:instagram_clone_coding/pages/home_screen.dart';
 import 'package:instagram_clone_coding/pages/like_screen.dart';
 import 'package:instagram_clone_coding/pages/search_focus.dart';
+import 'package:instagram_clone_coding/pages/search_focus_detail.dart';
 import 'package:instagram_clone_coding/pages/search_screen.dart';
+import 'package:instagram_clone_coding/pages/search_screen_detail.dart';
 import 'package:instagram_clone_coding/wigets/etc.dart';
 
 void main() {
@@ -26,6 +28,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(),
+      getPages: [
+        GetPage(name: "/SearchFocusDetail", page: () => const SearchFocusDetail()),
+        GetPage(name: "/SearchScreenDetail", page: () => const SearchScreenDetail()),
+      ],
     );
   }
 }
@@ -61,23 +67,29 @@ class MyHomePage extends StatelessWidget {
             type: BottomNavigationBarType.fixed,
             items: bottomNavigationBarItemList(),
           ),
-          body: IndexedStack(index: bottomNavigationBarController.rxTabIndex.value.index,
-          children: [
-            Container(child: const HomeScreen(),),
-            Container(child: SearchScreen(),),
-            Container(child:
-              Navigator( // 지금 이건 Navigator 가 감싸준거잖아...
-                key: bottomNavigationBarController.searchFocusNavigationKey,
-                onGenerateRoute: (routeSettings) {
-                  return MaterialPageRoute(builder: (context) {
-                    return const SearchFocus();
-                  });
-                },
-              ),
-              ),
-            Container(child: const LikeScreen()),
-            Container(child: const AboutScreen(),),
-          ],), // 뭐! 모든게 문제네.. body 하나하는데도 이렇게 시간이 걸린다니.. // 이거 만들때마다 바뀌게 될까?
+          body: WillPopScope(
+            onWillPop: () async {
+              return !await BottomNavigationBarController.to.IndexedStackKey.currentState!.maybePop();
+            },
+            child: IndexedStack(key: BottomNavigationBarController.to.IndexedStackKey,
+              index: bottomNavigationBarController.rxTabIndex.value.index,
+            children: [
+              Container(child: const HomeScreen(),),
+              Container(child: SearchScreen(),),
+              Container(child:
+                Navigator( // 지금 이건 Navigator 가 감싸준거잖아...
+                  key: bottomNavigationBarController.searchFocusNavigationKey,
+                  onGenerateRoute: (routeSettings) {
+                    return MaterialPageRoute(builder: (context) {
+                      return const SearchFocus();
+                    });
+                  },
+                ),
+                ),
+              Container(child: const LikeScreen()),
+              Container(child: const AboutScreen(),),
+            ],),
+          ), // 뭐! 모든게 문제네.. body 하나하는데도 이렇게 시간이 걸린다니.. // 이거 만들때마다 바뀌게 될까?
         ),
       ),
     );

@@ -37,7 +37,8 @@ class _SearchFocusState extends State<SearchFocus> with TickerProviderStateMixin
         elevation: 0,
         leading: GestureDetector(
             onTap: () {
-              Get.back();
+              //Navigator.maybePop(context);
+              //Get.back();
             },
             child: const Icon(Icons.arrow_back)),
         bottom: PreferredSize(
@@ -93,6 +94,8 @@ class _SearchFocusState extends State<SearchFocus> with TickerProviderStateMixin
         children: [
           GestureDetector(onTap:() {
             Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchFocusDetail()));
+            //Navigator.pushNamed(context, "/SearchScreenDetail");
+            //Get.toNamed("/SearchFocusDetail"); // 이렇게 하니깐 안된다.
           },
               child: Container(child: const Center(child: Text('인기 페이지'),),)),
           Container(child: const Center(child: Text('계정 페이지'),),),

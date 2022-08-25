@@ -6,6 +6,7 @@ class SearchFocusDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: GestureDetector(onTap: () => Get.back(),child: Container(child: const Text("Search Focus Detailsssss", style: TextStyle(color: Colors.purple),),)));
+    // 역시 멍청해.. Navigator 전통방식 써놓고 Get.back 하고 있다... ㅉㅉㅉ
+    return Center(child: GestureDetector(onTap: () => Navigator.pop(context),child: Container(child: const Text("Search Focus Detailsssss", style: TextStyle(color: Colors.purple),),)));
   }
 }

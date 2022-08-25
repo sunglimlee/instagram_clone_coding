@@ -7,6 +7,8 @@ class BottomNavigationBarController extends GetxController {
       Get.find(); // 이제 BottomNavigationBarController.to 로 사용할 수 있지..
   GlobalKey<NavigatorState> searchFocusNavigationKey = GlobalKey<
       NavigatorState>();
+  GlobalKey<NavigatorState> IndexedStackKey = GlobalKey<
+      NavigatorState>();
   Rx<BottomNavigationNames> _rxTabIndex = BottomNavigationNames.HOME.obs;
 
   Rx<BottomNavigationNames> get rxTabIndex => _rxTabIndex;
