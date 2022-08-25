@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:instagram_clone_coding/pages/search_focus_detail.dart';
 
 // 왜 StatefulWidget 을 만들었을까?
 class SearchFocus extends StatefulWidget {
@@ -90,7 +91,10 @@ class _SearchFocusState extends State<SearchFocus> with TickerProviderStateMixin
       child: TabBarView(
         controller: tabController,
         children: [
-          Container(child: const Center(child: Text('인기 페이지'),),),
+          GestureDetector(onTap:() {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchFocusDetail()));
+          },
+              child: Container(child: const Center(child: Text('인기 페이지'),),)),
           Container(child: const Center(child: Text('계정 페이지'),),),
           Container(child: const Center(child: Text('오디오 페이지'),),),
           Container(child: const Center(child: Text('태그 페이지'),),),

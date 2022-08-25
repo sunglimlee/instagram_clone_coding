@@ -15,6 +15,7 @@
 14. 중첩 라우팅 - nested navigating
 15. BottomNavigationBar 객체
 16. enum 객체
+17. PageView 객체도 사용해 보도록 하자. (애니메이션과 손으로 넘기기도 되는것 같다.)
 
 
 
@@ -98,8 +99,14 @@ Scaffold( bottom: PreferredSize(preferredSize: Size.fromHeight(AppBar().preferre
 > TabBar(), TabController() // 이건 이벤트를 받기에 인터페이스 상속받고, TabBarView() 를 이용해서 내부만든다.
 
 # 중첩 라우팅 - nested navigating
-> 일단은 중첩 라이팅이 되어야지.. 그래서 아마도 Navigator 객체를 감싸줄거고.. 그리고 그걸 namedTo 이런걸로 가지 않을까? 아니... 정확히는
-> GlobalKey 값이 있기때문에 그 키값을 가지고 네비게이터를 찾는거다.
+> Navigator 로 감싸진 객체 즉 nested Navigator 로 들어가서는 그 안에서 네비게이션이 이루어진다. 
+> IndexedStack 과 TabBarView 는 여전히 1개의 페이지이므로 Navigator 가 필요가 없다.
+> 따라서 nested Navigator 에서 나오려면 WillPopScope 을 구현해 주어야 한다.
+> 그리고 해당 중첩 Navigator 의 Navigation 을 조절하려면 Global Key 를 이용해 주어야 한다. 그래서 Global Key 를 루트에 선언해 주는거다.
+```dart
+// pop 할게 있으면 하는데 그래서 true 가 되고 그러면 앱이 종료되는데 종료되는걸 막기 위해서 !await 를 해주는 거다.
+return !await bottomNavigationBarController.searchFocusNavigationKey.currentState!.maybePop();
+```
 
 # BottomNavigationBar 객체
 > 
@@ -107,6 +114,7 @@ Scaffold( bottom: PreferredSize(preferredSize: Size.fromHeight(AppBar().preferre
 # enum
 > Rx type 으로 넣을 수 없다는 문제
 
+# PageView 객체도 사용해 보도록 하자. (애니메이션과 손으로 넘기기도 되는것 같다.)
 
 
 

@@ -37,47 +37,48 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print(" 이것도 계속 바뀌나?"); // 아니 안바뀐다. 이렇게 작업하면 일단은 문제가 없다.
-    return Obx(
-      () => // Obx 가 위에 이렇게 있어야 하고.
-          Scaffold(
-/*
-        appBar: AppBar(
-          title: Text(
-              bottomNavigationBarController.rxTabIndex.value.name.toString()),
-*/
-/*
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.black),
-              onPressed: () => Get.back(),),
-*//*
+    return WillPopScope(onWillPop: () async {
+      return await BottomNavigationBarController.to.onWillPop();
 
-        ),
+    },
+      child: Obx(
+        () => // Obx 가 위에 이렇게 있어야 하고.
+            Scaffold(
+/*
+          appBar: AppBar(
+            title: Text(
+                bottomNavigationBarController.rxTabIndex.value.name.toString()),
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back, color: Colors.black),
+                onPressed: () => BottomNavigationBarController().back(),),
+          ),
 */
-        bottomNavigationBar: BottomNavigationBar(
-          onTap: (index)=> bottomNavigationBarOnTap(context, index),
-          currentIndex: currentIndex(),
-          // 값을 불러와야 하는데.
-          elevation: 0,
-          type: BottomNavigationBarType.fixed,
-          items: bottomNavigationBarItemList(),
+          bottomNavigationBar: BottomNavigationBar(
+            onTap: (index)=> bottomNavigationBarOnTap(context, index),
+            currentIndex: currentIndex(),
+            // 값을 불러와야 하는데.
+            elevation: 0,
+            type: BottomNavigationBarType.fixed,
+            items: bottomNavigationBarItemList(),
+          ),
+          body: IndexedStack(index: bottomNavigationBarController.rxTabIndex.value.index,
+          children: [
+            Container(child: const HomeScreen(),),
+            Container(child: SearchScreen(),),
+            Container(child:
+              Navigator( // 지금 이건 Navigator 가 감싸준거잖아...
+                key: bottomNavigationBarController.searchFocusNavigationKey,
+                onGenerateRoute: (routeSettings) {
+                  return MaterialPageRoute(builder: (context) {
+                    return const SearchFocus();
+                  });
+                },
+              ),
+              ),
+            Container(child: const LikeScreen()),
+            Container(child: const AboutScreen(),),
+          ],), // 뭐! 모든게 문제네.. body 하나하는데도 이렇게 시간이 걸린다니.. // 이거 만들때마다 바뀌게 될까?
         ),
-        body: IndexedStack(index: bottomNavigationBarController.rxTabIndex.value.index,
-        children: [
-          Container(child: const HomeScreen(),),
-          Container(child: SearchScreen(),),
-          Container(child:
-            Navigator( // 지금 이건 Navigator 가 감싸준거잖아...
-              key: bottomNavigationBarController.searchFocusNavigationKey,
-              onGenerateRoute: (routeSettings) {
-                return MaterialPageRoute(builder: (context) {
-                  return const SearchFocus();
-                });
-              },
-            ),
-            ),
-          Container(child: const LikeScreen()),
-          Container(child: const AboutScreen(),),
-        ],), // 뭐! 모든게 문제네.. body 하나하는데도 이렇게 시간이 걸린다니.. // 이거 만들때마다 바뀌게 될까?
       ),
     );
   }
@@ -135,15 +136,12 @@ class MyHomePage extends StatelessWidget {
   bottomNavigationBarOnTap(BuildContext context, int index) {
     //print("BottomNavigationNames.values[index] 는 ${BottomNavigationNames.values[index]} 입니다요. ");
     switch (index) {
-/*
-      case 8 : {
+  /*    case 1 : {
         // Get.to(SearchFocus());
         Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchFocus()));
         break;
       }
-*/
-      default : {
-
+*/      default : {
       }
     }
     bottomNavigationBarController
