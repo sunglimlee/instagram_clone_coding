@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:instagram_clone_coding/controller/bottom_navigation_bar_controller.dart';
+import 'package:instagram_clone_coding/controller/bottom_nav_controller.dart';
+import 'package:instagram_clone_coding/controller/init_bindings.dart';
 import 'package:instagram_clone_coding/pages/about_screen.dart';
 import 'package:instagram_clone_coding/pages/home_screen.dart';
 import 'package:instagram_clone_coding/pages/like_screen.dart';
@@ -8,6 +9,7 @@ import 'package:instagram_clone_coding/pages/search_focus.dart';
 import 'package:instagram_clone_coding/pages/search_focus_detail.dart';
 import 'package:instagram_clone_coding/pages/search_screen.dart';
 import 'package:instagram_clone_coding/pages/search_screen_detail.dart';
+import 'package:instagram_clone_coding/src/app/app.dart';
 import 'package:instagram_clone_coding/wigets/etc.dart';
 
 void main() {
@@ -21,35 +23,41 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(
-        BottomNavigationBarController()); // 이게 어디에 들어가야 하는건가? 여기 맞나? 왜 Bindings 객체 상속받은건 안되지?
+        BottomNavController()); // 이게 어디에 들어가야 하는건가? 여기 맞나? 왜 Bindings 객체 상속받은건 안되지?
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        appBarTheme: const AppBarTheme(backgroundColor: Colors.white, titleTextStyle: TextStyle(color: Colors.black),),
       ),
-      home: MyHomePage(),
+      home: App(),
+      initialBinding: InitBindings(),
+/*
       getPages: [
         GetPage(name: "/SearchFocusDetail", page: () => const SearchFocusDetail()),
         GetPage(name: "/SearchScreenDetail", page: () => const SearchScreenDetail()),
       ],
+*/
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  MyHomePage({Key? key}) : super(key: key);
-  var bottomNavigationBarController = Get.find<BottomNavigationBarController>();
+/*
+class AppOldVersion extends StatelessWidget {
+  AppOldVersion({Key? key}) : super(key: key);
+  var bottomNavigationBarController = Get.find<BottomNavController>();
 
   @override
   Widget build(BuildContext context) {
     print(" 이것도 계속 바뀌나?"); // 아니 안바뀐다. 이렇게 작업하면 일단은 문제가 없다.
     return WillPopScope(onWillPop: () async {
-      return await BottomNavigationBarController.to.onWillPop();
+      return await BottomNavController.to.onWillPop();
 
     },
       child: Obx(
         () => // Obx 가 위에 이렇게 있어야 하고.
             Scaffold(
+*/
 /*
           appBar: AppBar(
             title: Text(
@@ -58,7 +66,8 @@ class MyHomePage extends StatelessWidget {
                 icon: Icon(Icons.arrow_back, color: Colors.black),
                 onPressed: () => BottomNavigationBarController().back(),),
           ),
-*/
+*//*
+
           bottomNavigationBar: BottomNavigationBar(
             onTap: (index)=> bottomNavigationBarOnTap(context, index),
             currentIndex: currentIndex(),
@@ -69,9 +78,9 @@ class MyHomePage extends StatelessWidget {
           ),
           body: WillPopScope(
             onWillPop: () async {
-              return !await BottomNavigationBarController.to.IndexedStackKey.currentState!.maybePop();
+              return !await BottomNavController.to.IndexedStackKey.currentState!.maybePop();
             },
-            child: IndexedStack(key: BottomNavigationBarController.to.IndexedStackKey,
+            child: IndexedStack(key: BottomNavController.to.IndexedStackKey,
               index: bottomNavigationBarController.rxTabIndex.value.index,
             children: [
               Container(child: const HomeScreen(),),
@@ -120,6 +129,7 @@ class MyHomePage extends StatelessWidget {
             //return MyScreens.searchFocus;
             return SearchFocus() ;
             // 실컷 작업했는데 결국은 static 으로 만드니깐 아무문제 없이 계속 유지가 된다.
+*/
 /*
             return Navigator( // 여기를 감싸주어서 이게 계속 유지가 되고 있는거네..
               key: bottomNavigationBarController.searchFocusNavigationKey,
@@ -131,7 +141,8 @@ class MyHomePage extends StatelessWidget {
                 });
               },
             );
-*/
+*//*
+
 
         }
       case BottomNavigationNames.LIKE:
@@ -148,12 +159,14 @@ class MyHomePage extends StatelessWidget {
   bottomNavigationBarOnTap(BuildContext context, int index) {
     //print("BottomNavigationNames.values[index] 는 ${BottomNavigationNames.values[index]} 입니다요. ");
     switch (index) {
-  /*    case 1 : {
+  */
+/*    case 1 : {
         // Get.to(SearchFocus());
         Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchFocus()));
         break;
       }
-*/      default : {
+*//*
+      default : {
       }
     }
     bottomNavigationBarController
@@ -202,3 +215,4 @@ List<BottomNavigationBarItem> bottomNavigationBarItemList() {
   ];
   return bottomNavigationBarItem;
 }
+*/

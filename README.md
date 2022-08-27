@@ -17,13 +17,15 @@
 16. enum 객체
 17. PageView 객체도 사용해 보도록 하자. (애니메이션과 손으로 넘기기도 되는것 같다.)
 18. SingleChildScrollView 객체 기억나지?
-
+19. Wrap 객체 - 너무 많으면 다음줄로 넘긴다. Warning 피할 수 있슴
+20. WillPopScope 객체
 
 # Image 객체
 > 디바이스 pixel ratio 에 따라 값이 조절되도록 하고 싶을 때
 ```dart
-return image.asset(icon, width: width / MediaQuery.of(context).devicePixelRatio);
+  return Image.asset(_icon, width: _width! / Get.mediaQuery.devicePixelRatio,); // 디바이스 전체 크기 비율로 줄여주는구나.
 ```
+> 이미지는 항상 SVG 파일로 만들는게 좋다는 걸 기억하자.
 
 # BottomNavigationBar 객체
 > 일단 static 을 포함한 객체를 이용해서 경로를 가진 IconPath 를 넘겨주면 좋고.
@@ -49,7 +51,7 @@ class InitBinding extends Bindings {
 # IndexedStack
 > 내가 배웠던 Stack 과 Offset 위젯을 합쳐 놓은거네.. ㅎㅎㅎ
 
-# Navigator 를 만들지 않고 `List<int> = [0];`를 사용해서 navigation 을 하고 있네..
+# 5. Navigator 를 만들지 않고 `List<int> = [0];`를 사용해서 navigation 을 하고 있네.. ❤❤❤❤❤
 
 
 # SingleChildScrollView 객체
@@ -111,16 +113,52 @@ return !await bottomNavigationBarController.searchFocusNavigationKey.currentStat
 # BottomNavigationBar 객체
 > 
 
-# enum
+# 16. enum 객체
 > Rx type 으로 넣을 수 없다는 문제
+```dart
+enum PageName {HOME, SEARCH, UPLOAD, ACTIVITY, MYPAGE}
+var page = PageName.values[value];
+```
 
 # PageView 객체도 사용해 보도록 하자. (애니메이션과 손으로 넘기기도 되는것 같다.)
 
 # SingleChildScrollView 객체 기억나지?
 
 
+# 19. Wrap 객체 - 너무 많으면 다음줄로 넘긴다. Warning 피할 수 있슴
+[What is Wrap object](https://medium.com/flutter-community/flutter-wrap-widget-e1ee0b005b16)
+```dart
+Wrap(
+  direction: Axis.vertical,
+  children: [
+    MyWidget(),
+    MyWidget(),
+    MyWidget(),
+    MyWidget(),
+    MyWidget(),
+  ],
+),
+```
+# 20. WillPopScope 객체
+> false 는 계속 유지, true 는 종료
+```dart
+  Future<bool> willPopAction() async {
+    if (bottomHistory.length == 1) {
+      Get.defaultDialog(title: 'close', content: Text('Do you want to close?'),  textConfirm: "Close", textCancel: "Cancel",
+          // 여기 잘봐라. exit(0) 아주 중요하다. 그리고 Get.back()
+          onConfirm: ()=> exit(0), onCancel: ()=> Get.back());
+      return true;
+    } else {
+      print('goto before page!'); // 현재는 아무것도 움직이지 않잖아????
+      bottomHistory.removeLast(); // 마지막걸 지우고..
+      print(bottomHistory);
+      var index = bottomHistory.last;
+      changeBottomNav(index, isTapped: false); // 여기 보이나? 탭으로 바꿔주고 있다는 걸... 결국 이게 맞네.. 내가 한게 맞았네..
+      return false;
+    }
+  }
 
-
+```
 
 
 
