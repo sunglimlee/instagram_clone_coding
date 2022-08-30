@@ -1,24 +1,36 @@
 #목차 (Github commit 확인)
+> BottomNavigationBar, nested navigation, list 이용한 history back button, showDialog, GridView 사용자 객체, 
+
 1. Image 객체
 2. BottomNavigationBar 객체
 3. Getx binding 새로운 방법
 4. IndexedStack 객체
 5. Navigator 를 만들지 않고 `List<int> = [0];`를 사용해서 navigation 을 하고 있네..
-6. SingleChildScrollView 객체 
+6. SingleChildScrollView 객체 - List & Row 사용 
 7. CachedNetworkImage 객체
-8. ClipRect 객체 : 이름을 잘 생각해 봐라.
+8. ClipRRect 객체 : 이름을 잘 생각해 봐라. 컨테이너 객체 가장자리 둥글게 만들어준다.
 9. ExpandableText 객체
 10. GestureDetector 객체
-11. Container 객체 가로전체 채우기
-12. AppBar 객체 사이즈 알아내기
-13. TabBar 객체 알아야 할 내용
-14. 중첩 라우팅 - nested navigating
-15. BottomNavigationBar 객체
-16. enum 객체
-17. PageView 객체도 사용해 보도록 하자. (애니메이션과 손으로 넘기기도 되는것 같다.)
-18. SingleChildScrollView 객체 기억나지?
-19. Wrap 객체 - 너무 많으면 다음줄로 넘긴다. Warning 피할 수 있슴
-20. WillPopScope 객체
+11. Container 객체 가로전체 채우기, Container width & height
+12. Container Circle 모양으로 만들기
+13. AppBar 객체 사이즈 알아내기
+14. TabBar 객체 알아야 할 내용
+15. 중첩 라우팅 - nested navigating
+16. BottomNavigationBar 객체
+17. enum 객체
+18. PageView 객체도 사용해 보도록 하자. (애니메이션과 손으로 넘기기도 되는것 같다.)
+19. SingleChildScrollView 객체 기억나지?
+20. Wrap 객체 - 너무 많으면 다음줄로 넘긴다. Warning 피할 수 있슴
+21. WillPopScope 객체
+22. Material 객체 - 스타일을 입히기 위해서
+23. Elevated Button 객체
+24. showDialog 객체 (callback 함수 호출에 대한 착각)
+25. CachedNetworkImage 객체
+26. List 를 사용해서 children 에 배열을 계속 나열하고 싶을 때
+27. Stack 객체 (Positioned 객체 사용법)
+28. ExpandableText 객체 (... 으로 늘렸다 줄였다 하는 위젯)
+
+
 
 # Image 객체
 > 디바이스 pixel ratio 에 따라 값이 조절되도록 하고 싶을 때
@@ -51,7 +63,7 @@ class InitBinding extends Bindings {
 # IndexedStack
 > 내가 배웠던 Stack 과 Offset 위젯을 합쳐 놓은거네.. ㅎㅎㅎ
 
-# 5. Navigator 를 만들지 않고 `List<int> = [0];`를 사용해서 navigation 을 하고 있네.. ❤❤❤❤❤
+# Navigator 를 만들지 않고 `List<int> = [0];`를 사용해서 navigation 을 하고 있네.. ❤❤❤❤❤
 
 
 # SingleChildScrollView 객체
@@ -62,6 +74,25 @@ children: List.generate(100, (index) => Container(width: 60, height: 60,
    decoration: BoxDecoration(shape: BoxShape.circle, color: Color.grey))))
 );
 ```
+```dart
+  Widget _myBodyStoryBoardList() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children:
+            // [question] The element type 'List<Container>' can't be assigned to the list type 'Widget'.
+            // [answer] Row 의 children 이 List [] 인데 지금 List 를 리턴하니깐 [] 를 없애주어야지..
+            List.generate(
+                100,
+                (index) => Container(
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.grey),
+                    )),
+      ),
+    );
+  }
+
+```
 
 # CachedImageNetwork 객체
 ```dart
@@ -69,8 +100,14 @@ child : CachedNetworkImage(imageUrl: thumbPath, fit: Boxfit.cover),
 ```
 
 # ClipRect 객체
+> 컨테이너 객체 가장자리 둥글게 만들어준다.
 ```dart
-ClipRect(borderRadius: BorderRadius.circular(65), )
+ClipRRect(borderRadius: BorderRadius.circular(65), )
+```
+> 만약 Container() 안에다가 바로 하고 싶다면
+```dart
+List.generate(100, (index) => Container(decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.grey),))
+
 ```
 
 # ExpandableText 객체
@@ -87,9 +124,18 @@ linkColor: Colors.grey,),
 return GestureDetector(onTap: (){}, child: Text('댓글 199개 모두보기', style: TextStyle(),), )
 ```
 
-# Container 객체 가로전체 채우기
+# Container 객체 가로전체 채우기, Container width & height
 ```dart
 Container(width: Size:infinite.width), 
+```
+> Container `width=200, height=200` 미리 입력하는 습관을 들이도록 하자.
+# Container Circle 모양으로 만들기
+```dart
+Container(width: 25, height: 25,
+          decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.purple,
+          border: Border.all(color: Colors.white, width: 2)),
+          child: Icon(Icons.add, color: Colors.white,),
+        ),
 ```
 
 # AppBar 객체 사이즈 알아내기
@@ -113,7 +159,7 @@ return !await bottomNavigationBarController.searchFocusNavigationKey.currentStat
 # BottomNavigationBar 객체
 > 
 
-# 16. enum 객체
+# enum 객체
 > Rx type 으로 넣을 수 없다는 문제
 ```dart
 enum PageName {HOME, SEARCH, UPLOAD, ACTIVITY, MYPAGE}
@@ -125,7 +171,7 @@ var page = PageName.values[value];
 # SingleChildScrollView 객체 기억나지?
 
 
-# 19. Wrap 객체 - 너무 많으면 다음줄로 넘긴다. Warning 피할 수 있슴
+# Wrap 객체 - 너무 많으면 다음줄로 넘긴다. Warning 피할 수 있슴
 [What is Wrap object](https://medium.com/flutter-community/flutter-wrap-widget-e1ee0b005b16)
 ```dart
 Wrap(
@@ -139,8 +185,9 @@ Wrap(
   ],
 ),
 ```
-# 20. WillPopScope 객체
+# WillPopScope 객체
 > false 는 계속 유지, true 는 종료
+[강제 종료하는 방법](https://stackoverflow.com/questions/45109557/flutter-how-to-programmatically-exit-the-app)
 ```dart
   Future<bool> willPopAction() async {
     if (bottomHistory.length == 1) {
@@ -160,6 +207,134 @@ Wrap(
 
 ```
 
+# Material 객체 - 스타일을 입히기 위해서
+```dart
+// TODO
+```
+# ElevatedButton 객체 - 배경색
+
+```dart
+showDialog(context: Get.context!, builder: (context) {
+  return MessagePopup( // 여기 잘보자. cancel Callback : Get.back 만 했다. 왜냐하면 함수가 넘어가야 하니깐.
+  okCallback: (){exit(0);}, title: '시스템', message: '종료하시겠습니까?', cancelCallback: Get.back,
+);
+
+
+////
+final Function()? _cancelCallback;
+final Function()? _okCallback;
+
+////
+ElevatedButton(onPressed: () {_okCallback;}, child: const Text("확인"),),
+ElevatedButton(onPressed: () {_cancelCallback;}, style: ElevatedButton.styleFrom(primary: Colors.grey), child: const Text("취소"),),
+
+```
+# showDialog 객체
+> 함수를 호출해야한다는 의미는 함수의 이름만 1:1로 대응이 되어야하는데 너는 실수로 () => 함수를 실행시켰다. 
+> 완전 삽질을 한거지..
+
+# CachedNetworkImage
+> 프로젝트를 새로 시작해라. 그래야지 제대로 불러들인다. 왜냐고? PUb sub 새로 들어왔잖아.
+> Indicator 도 사용할 수 있고.. 다재다능하네.
+
+```dart
+  Widget type1Widget() {
+    // Gradation 이 들어가야하는 위젯이다.
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 5),
+      padding: EdgeInsets.all(2),
+      decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [Colors.purple, Colors.orange]),
+          shape: BoxShape.circle),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(65), // 이걸 감싸주어야 동그랗게 잘라줄 수 있게 된다.
+        child: SizedBox(
+          width: 65,
+          height: 65,
+          child: CachedNetworkImage(
+            imageUrl: thumbPath,
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+```
+```dart
+Widget type1WidgetTempBackup() {
+  // Gradation 이 들어가야하는 위젯이다.
+  return Container(
+    width: 160,
+    height: 160,
+    margin: const EdgeInsets.symmetric(horizontal: 5),
+    decoration: const BoxDecoration(
+        gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [Colors.purple, Colors.orange]),
+        shape: BoxShape.circle),
+    child: CachedNetworkImage(
+      imageUrl: 'https://i.guim.co.uk/img/media/fe1e34da640c5c56ed16f76ce6f994fa9343d09d/0_174_3408_2046/master/3408.jpg?width=1200&height=900&quality=85&auto=format&fit=crop&s=0d3f33fb6aa6e0154b7713a00454c83d',
+      placeholder: (context, url) => const CircleAvatar(
+        backgroundColor: Colors.amber,
+        radius: 150,
+      ),
+      imageBuilder: (context, image) => CircleAvatar(
+        backgroundImage: image,
+        radius: 150,
+      ),
+    ),
+  );
+}
+
+```
+
+# List 를 사용해서 children 에 배열을 계속 나열하고 싶을 때
+```dart
+      child: Row(
+        children: [
+          _myStory(),
+          // [question] The element type 'List<Container>' can't be assigned to the list type 'Widget'.
+          // [answer] Row 의 children 이 List [] 인데 지금 List 를 리턴하니깐 [] 를 없애주어야지..
+          ...List.generate( // 배열을 계속 나열하겠다는 뜻임.
+              100,
+                  (index) => AvatarWidget(thumbPath: 'https://media-cldnry.s-nbcnews.com/image/upload/t_fit-760w,f_auto,q_auto:best/rockcms/2022-04/220428-dog-breeds-mb-1019-95b354.jpg', type: AvatarType.TYPE1)),
+
+        ]
+      ),
+```
+```dart
+    return Column(
+      children:
+      List.generate(50, (index) => PostWidget()).toList(),);
+  }
+```
+
+# Stack 객체 (Positioned 객체 사용법)
+```dart
+  Widget _myStory() {
+    return Stack(
+      children: [
+        AvatarWidget(thumbPath: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5W2qWDdF7ztjYI9lL_odxd3LY3uv8BOI9Ug&usqp=CAU', type: AvatarType.TYPE2, size: 70,),
+        Positioned(
+          right: 1,bottom: 0, child: Container(width: 25, height: 25,
+          decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.purple,
+          border: Border.all(color: Colors.white, width: 2)),
+          child: Icon(Icons.add, color: Colors.white,),
+        ),
+        )
+      ],
+    );
+  }
+
+```
+
+# 28. ExpandableText 객체 (... 으로 늘렸다 줄였다 하는 위젯)
 
 
 

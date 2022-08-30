@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_clone_coding/controller/bottom_nav_controller.dart';
-import 'package:instagram_clone_coding/src/components/image_data.dart';
+import 'package:instagram_clone_coding/pages/home_screen.dart';
+import 'package:instagram_clone_coding/wigets/image_data.dart';
 import 'package:instagram_clone_coding/controller/bottom_nav_controller.dart';
 
 class App extends GetView<BottomNavController> {
@@ -10,9 +11,11 @@ class App extends GetView<BottomNavController> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: controller.willPopAction,
+      // [question] The argument type 'Future<bool>' can't be assigned to the parameter type 'Future<bool> Function()?'.
+      // [answer] controller.willPopActionByShowDialog not controller.willPopActionByShowDialog()
+        onWillPop: controller.willPopActionByShowDialog,
         child: Obx(() => Scaffold(
-            appBar: myAppBar(),
+            //appBar: myAppBar(),
             body: myBody(),
             bottomNavigationBar: myBottomNavigationBar(),
           ),
@@ -27,7 +30,7 @@ class App extends GetView<BottomNavController> {
     return IndexedStack(
       index: controller.pageIndex.value,
       children: [
-        Container(child: Center(child: Text('HOME'),),),
+        HomeScreen(),
         Container(child: Center(child: Text('SEARCH'),),),
         Container(child: Center(child: Text('UPLOAD'),),),
         Container(child: Center(child: Text('ACTIVITY'),),),

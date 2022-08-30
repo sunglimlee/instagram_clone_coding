@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
     Get.put(
         BottomNavController()); // 이게 어디에 들어가야 하는건가? 여기 맞나? 왜 Bindings 객체 상속받은건 안되지?
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
