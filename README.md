@@ -29,6 +29,8 @@
 26. List 를 사용해서 children 에 배열을 계속 나열하고 싶을 때
 27. Stack 객체 (Positioned 객체 사용법)
 28. ExpandableText 객체 (... 으로 늘렸다 줄였다 하는 위젯)
+29. SafeArea 객체
+30. 화면에 인스타그램처럼 이미지를 뿌려주는 방법 (Stateful, List, )
 
 
 
@@ -137,6 +139,7 @@ Container(width: 25, height: 25,
           child: Icon(Icons.add, color: Colors.white,),
         ),
 ```
+> 그리고 한가지 더 기억할게 자식을 Expanded() 객체로 감싸면 남은 여백을 다 차지한다는걸 알고있제?
 
 # AppBar 객체 사이즈 알아내기
 ```dart
@@ -334,7 +337,76 @@ Widget type1WidgetTempBackup() {
 
 ```
 
-# 28. ExpandableText 객체 (... 으로 늘렸다 줄였다 하는 위젯)
+# ExpandableText 객체 (... 으로 늘렸다 줄였다 하는 위젯)
+
+# SafeArea 객체
+> 상태바를 침범하지 않고 안전영역에 화면을 그리도록 한다. 
+> 왜 이런문제가 생기냐면 body 에다가 앱바 모양을 만들게 되면 스크롤해서 숨길 수 있게 되기 때문이다. 
+> 그럼 기존의 앱바를 이용하면 고정이 되어있다는 건가?
+
+# 화면에 인스타그램처럼 이미지를 뿌려주는 방법 (Stateful, List, )
+> 기본적으로 Stateful 객체를 사용하면 initState 함수를 사용할 수 있고 컨테이너가 참고할 List 객체를 미리 정해놓을 수 있다.
+> 뭐 꼭 그렇게 하지 않아도 되긴한다.
+> **항상 리스트나 맵을 이용해서 화면에 뿌려주는 방법을 생각해 보도록 하자.**
+> Random 사용하는것도 생각해보고 List.generate 도 항상 생각하고
+```dart
+/// Stateful 안에서
+List<List<int>> groupBox = [[], [], []]; //3개의 컬럼에 있는 리스트별로 사이즈가 들어간다. (1, 2) 중에 하나로. // QnADartGrammar 2차배열
+List<int> groupIndex = [0,0,0]; // 전체 사이즈 합계를 체크하기 위한 리스트 // 라이브러리를 추가한다.quiver, 각 컬럼별 사이즈가 합계된다.
+
+@override
+void initState() {
+  // 이게 왜 실행이 안되지???? // 최초 실행시 한번만 돌아간다. 이름 보면 모르겠나??? // 그러니깐 다시 빌드해야 보이지.!
+  super.initState();
+  for (var i = 0; i < 100; i++) {
+    var gi = groupIndex.indexOf(
+        min<int>(groupIndex)!); // 여기 봐라. 0,1,2 중에서 제일 작은거 찾아서 인덱스(0,1,2) 를 넘겨줌.
+    //var gi = i % 3;
+    var size = 1;
+    if (gi != 1) { // 그러니깐 중간값 1이 아니면
+      print('gi 값은 $gi 입니다.');
+      size = Random().nextInt(100) % 2 == 0 ? 1 : 2;
+    }
+    groupBox[gi].add(
+        size); // 각 컬럼 리스트에 1씩 들어간다. 결국 groupBox[0] 에는 34개, groupBox[1]과 groupBox[2] 에는 33개
+    groupIndex[gi] += size; // 각 리스트값에 사이즈를 더해주면 위에서 제일 작은 값을 찾을 거고
+  }
+  print('groupBox[0] 값은 $groupBox[0]');
+  print('groupBox[1] 값은 $groupBox[1]');
+  print('groupBox[2] 값은 $groupBox[2]');
+}
+```
+```dart
+  Widget _myBody() {
+    // 컬럼이 3개가 있고.. 이미지를 하나씩 축적하면 어떨까?
+    print("groupBox.length 의 값은 ${groupBox.length} 입니다.");
+    return SingleChildScrollView(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children:
+          List.generate(groupBox.length, (index) => Expanded(
+            child: Column(children: // 총 3개의 확장된 컬럼이 들어가는거고..
+              List.generate(groupBox[index].length, (jndex) => Container(
+                height: Get.width * 0.33 * groupBox[index][jndex], // groupBox[index][jndex] 의 값은 1 이나 2 가 들어간다.
+                decoration: BoxDecoration(border: Border.all(color: Colors.white),
+                color: Colors.primaries[Random().nextInt(Colors.primaries.length)]),
+                child: CachedNetworkImage(fit: BoxFit.cover,imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5W2qWDdF7ztjYI9lL_odxd3LY3uv8BOI9Ug&usqp=CAU'),
+              )).toList(),
+            ),
+          ),
+          ).toList(),
+      ),
+    );
+  }
+
+```
+
+
+
+
+
+
+
 
 
 

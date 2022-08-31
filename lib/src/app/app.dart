@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_clone_coding/controller/bottom_nav_controller.dart';
 import 'package:instagram_clone_coding/pages/home_screen.dart';
+import 'package:instagram_clone_coding/pages/search_screen.dart';
 import 'package:instagram_clone_coding/wigets/image_data.dart';
 import 'package:instagram_clone_coding/controller/bottom_nav_controller.dart';
 
@@ -29,12 +30,12 @@ class App extends GetView<BottomNavController> {
   Widget myBody() {
     return IndexedStack(
       index: controller.pageIndex.value,
-      children: [
+      children: const [
         HomeScreen(),
-        Container(child: Center(child: Text('SEARCH'),),),
-        Container(child: Center(child: Text('UPLOAD'),),),
-        Container(child: Center(child: Text('ACTIVITY'),),),
-        Container(child: Center(child: Text('MYPAGE'),),),
+        SearchScreen(),
+        Center(child: Text('UPLOAD'),),
+        Center(child: Text('ACTIVITY'),),
+        Center(child: Text('MYPAGE'),),
       ],
     );
   }

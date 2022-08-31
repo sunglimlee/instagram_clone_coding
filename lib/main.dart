@@ -5,10 +5,10 @@ import 'package:instagram_clone_coding/controller/init_bindings.dart';
 import 'package:instagram_clone_coding/pages/about_screen.dart';
 import 'package:instagram_clone_coding/pages/home_screen.dart';
 import 'package:instagram_clone_coding/pages/like_screen.dart';
-import 'package:instagram_clone_coding/pages/search_focus.dart';
-import 'package:instagram_clone_coding/pages/search_focus_detail.dart';
 import 'package:instagram_clone_coding/pages/search_screen.dart';
 import 'package:instagram_clone_coding/pages/search_screen_detail.dart';
+import 'package:instagram_clone_coding/pages/search_screen_old.dart';
+import 'package:instagram_clone_coding/pages/search_screen_detail_old.dart';
 import 'package:instagram_clone_coding/src/app/app.dart';
 import 'package:instagram_clone_coding/wigets/etc.dart';
 

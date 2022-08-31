@@ -15,7 +15,7 @@ class BottomNavController extends GetxController {
   List<int> bottomHistory = [0]; // 히스토리를 이렇게 관리하는구나.
 
   void changeBottomNav(value, {bool isTapped = true}) { // 봐라. 파라미터 맞잖아!
-    var page = PageName.values[value];
+    var page = PageName.values[value]; // QnADartGrammar
     switch (page) { // 아주 좋은 방법이다. 이런걸도 꿀팁
       case PageName.HOME:
       case PageName.SEARCH:
