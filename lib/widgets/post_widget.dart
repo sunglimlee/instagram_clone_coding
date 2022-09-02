@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:instagram_clone_coding/wigets/avatar_widget.dart';
-import 'package:instagram_clone_coding/wigets/image_data.dart';
+import 'package:instagram_clone_coding/widgets/avatar_widget.dart';
+import 'package:instagram_clone_coding/widgets/image_data.dart';
 
 class PostWidget extends StatelessWidget {
   const PostWidget({Key? key}) : super(key: key);

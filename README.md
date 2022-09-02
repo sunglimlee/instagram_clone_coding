@@ -14,7 +14,7 @@
 11. Container 객체 가로전체 채우기, Container width & height
 12. Container Circle 모양으로 만들기
 13. AppBar 객체 사이즈 알아내기
-14. TabBar 객체 알아야 할 내용
+14. TabBar 객체 알아야 할 내용 (Padding 으로 감싸서 클릭 면적 넓히기도 숙지)
 15. 중첩 라우팅 - nested navigating
 16. BottomNavigationBar 객체
 17. enum 객체
@@ -31,6 +31,7 @@
 28. ExpandableText 객체 (... 으로 늘렸다 줄였다 하는 위젯)
 29. SafeArea 객체
 30. 화면에 인스타그램처럼 이미지를 뿌려주는 방법 (Stateful, List, )
+31. 값을 참조하는 방법 2가지 추가
 
 
 
@@ -61,6 +62,8 @@ class InitBinding extends Bindings {
   }
 }
 ```
+> 알지? 또다른방법이긴하지만 static get 으로 만들어줘서 Get.find 를 매번안해도 되도록 할 수도 있다.
+> 
 
 # IndexedStack
 > 내가 배웠던 Stack 과 Offset 위젯을 합쳐 놓은거네.. ㅎㅎㅎ
@@ -147,7 +150,10 @@ Scaffold( bottom: PreferredSize(preferredSize: Size.fromHeight(AppBar().preferre
 ```
 
 # TabBar 객체 알아야 할 내용
-> TabBar(), TabController() // 이건 이벤트를 받기에 인터페이스 상속받고, TabBarView() 를 이용해서 내부만든다.
+> TabBar(), TabController(), TabBarView() // 이건 이벤트를 받기에 인터페이스 상속받고, TabBarView() 를 이용해서 내부만든다.
+> `class _SearchFocusState extends State<SearchFocus> with TickerProviderStateMixin { `
+> TabBarView() 안에 그냥 5개의 자식들을 넣어주면 알아서 테그를 할 때 알아서 들어간다. 
+
 
 # 중첩 라우팅 - nested navigating
 > Navigator 로 감싸진 객체 즉 nested Navigator 로 들어가서는 그 안에서 네비게이션이 이루어진다. 
@@ -204,6 +210,37 @@ Wrap(
       print(bottomHistory);
       var index = bottomHistory.last;
       changeBottomNav(index, isTapped: false); // 여기 보이나? 탭으로 바꿔주고 있다는 걸... 결국 이게 맞네.. 내가 한게 맞았네..
+      return false;
+    }
+  }
+
+```
+> nested navigation 이 적용된 개선된 버전
+```dart
+  Future<bool> willPopActionByShowDialog() async {
+    if (bottomHistory.length == 1) {
+      // [question] The argument type 'BuildContext?' can't be assigned to the parameter type 'BuildContext'.
+      // [answer] Get.context!
+      showDialog(context: Get.context!, builder: (context) {
+        return MessagePopup( // 여기 잘보자. cancel Callback : Get.back 만 했다. 왜냐하면 함수가 넘어가야 하니깐.
+          okCallback: () => exit(0), title: '시스템', message: '종료하시겠습니까?', cancelCallback : Get.back,);}
+      );
+      return true;
+    } else {
+      // 여기부분부터 nested Navigation 부분의 willPop 부분이다. 꼭 필요한 부분이지..
+      var page = PageName.values[bottomHistory.last];
+      if (page == PageName.SEARCH) { // search 페이지 안이라면 그안에서 팝할게 있을지도 모르니깐..
+        // https://stackoverflow.com/questions/49672706/flutter-navigation-pop-to-index-1
+        var value = await Get.nestedKey(1)!.currentState!.maybePop(); // 여기 안에서 팝할게있으면 여기서 하고
+        if (value) return false;
+        /*
+        value 가 true 이면 이조건문을 빠져나가는데 그말을 팝할게 있었다는 거잖아. 말그대로 그리드뷰로 간다는거고
+        value 가 false 이면 이제 팝할게 없다는 거고. 그래서 이조건문을 빠져나가지 못하고 다음문장을 계속실행한다.
+         */
+      }
+      bottomHistory.removeLast();
+      var index = bottomHistory.last;
+      changeBottomNav(index, isTapped: false);
       return false;
     }
   }
@@ -401,6 +438,19 @@ void initState() {
 
 ```
 
+# 값을 참조하는 방법 2가지 추가
+> 아주 중요한 내용이다.
+```dart
+  PreferredSizeWidget _myAppBarBottom() {
+    return PreferredSize(
+        child: Container(
+      width: Size.infinite.width, // 사이즈 객체의 static 변수 infinite 를 이용해서 Size 객체를 무조건 하나 생성하고 그 width 를 받는다.
+      child: Text("개남"), color: Color(0xff9ca5f2),), 
+        preferredSize: Size.fromHeight(AppBar().preferredSize.height), // 이렇게 객체를 임시로 만들어 값을 가져올 수도 있다. 
+    );
+  }
+
+```
 
 
 

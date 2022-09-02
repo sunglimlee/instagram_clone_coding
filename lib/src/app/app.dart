@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:instagram_clone_coding/controller/bottom_nav_controller.dart';
 import 'package:instagram_clone_coding/pages/home_screen.dart';
 import 'package:instagram_clone_coding/pages/search_screen.dart';
-import 'package:instagram_clone_coding/wigets/image_data.dart';
+import 'package:instagram_clone_coding/widgets/image_data.dart';
 import 'package:instagram_clone_coding/controller/bottom_nav_controller.dart';
 
 class App extends GetView<BottomNavController> {
@@ -30,13 +30,28 @@ class App extends GetView<BottomNavController> {
   Widget myBody() {
     return IndexedStack(
       index: controller.pageIndex.value,
-      children: const [
+      children: [
         HomeScreen(),
-        SearchScreen(),
+        _nestedNavigationForSearchFocus(),
         Center(child: Text('UPLOAD'),),
         Center(child: Text('ACTIVITY'),),
         Center(child: Text('MYPAGE'),),
       ],
+    );
+  }
+  Widget _nestedNavigationForSearchFocus() {
+    return Navigator(
+      key: Get.nestedKey(1),
+      initialRoute: '/',
+      onGenerateRoute: (settings) {
+        if (settings.name == '/SearchFocus') {
+          return GetPageRoute(
+            page: () => SearchScreen(),
+          );
+        } else {
+          return GetPageRoute(page: () => SearchScreen());
+        }
+      },
     );
   }
 

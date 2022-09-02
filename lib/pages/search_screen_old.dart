@@ -4,7 +4,7 @@ import 'package:instagram_clone_coding/controller/bottom_nav_controller.dart';
 import 'package:instagram_clone_coding/pages/search_screen.dart';
 import 'package:instagram_clone_coding/pages/search_screen_detail.dart';
 import 'package:instagram_clone_coding/pages/search_screen_detail_old.dart';
-import 'package:instagram_clone_coding/wigets/etc.dart';
+import 'package:instagram_clone_coding/widgets/etc.dart';
 
 class SearchScreenOld extends StatelessWidget {
   BottomNavController bottomNavigationBarController = Get.find<BottomNavController>();

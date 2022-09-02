@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_clone_coding/wigets/avatar_widget.dart';
-import 'package:instagram_clone_coding/wigets/image_data.dart';
-import 'package:instagram_clone_coding/wigets/post_widget.dart';
+import 'package:instagram_clone_coding/widgets/avatar_widget.dart';
+import 'package:instagram_clone_coding/widgets/image_data.dart';
+import 'package:instagram_clone_coding/widgets/post_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);

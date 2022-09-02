@@ -10,7 +10,7 @@ import 'package:instagram_clone_coding/pages/search_screen_detail.dart';
 import 'package:instagram_clone_coding/pages/search_screen_old.dart';
 import 'package:instagram_clone_coding/pages/search_screen_detail_old.dart';
 import 'package:instagram_clone_coding/src/app/app.dart';
-import 'package:instagram_clone_coding/wigets/etc.dart';
+import 'package:instagram_clone_coding/widgets/etc.dart';
 
 void main() {
   runApp(const MyApp());
