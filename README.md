@@ -27,11 +27,15 @@
 24. showDialog 객체 (callback 함수 호출에 대한 착각)
 25. CachedNetworkImage 객체
 26. List 를 사용해서 children 에 배열을 계속 나열하고 싶을 때
-27. Stack 객체 (Positioned 객체 사용법)
-28. ExpandableText 객체 (... 으로 늘렸다 줄였다 하는 위젯)
-29. SafeArea 객체
-30. 화면에 인스타그램처럼 이미지를 뿌려주는 방법 (Stateful, List, )
-31. 값을 참조하는 방법 2가지 추가
+27. List 변수 초기화 하는 방법 2가지
+28. Stack 객체 (Positioned 객체 사용법)
+29. ExpandableText 객체 (... 으로 늘렸다 줄였다 하는 위젯)
+30. SafeArea 객체
+31. 화면에 인스타그램처럼 이미지를 뿌려주는 방법 (Stateful, List, )
+32. 값을 참조하는 방법 2가지 추가
+33. GridView 객체
+34. PhotoManager 객체 (Device 의 사진을 불러와 보여주는 기능)
+35. callback function 사용법
 
 
 
@@ -355,6 +359,12 @@ Widget type1WidgetTempBackup() {
   }
 ```
 
+# List 변수 초기화 하는 방법 2가지
+```dart
+  List<AssetPathEntity> albums = [];
+  // var albums = <AssetPathEntity>[]; // 이거 똑같은 뜻인거 맞지? 확실하지? 
+```
+
 # Stack 객체 (Positioned 객체 사용법)
 ```dart
   Widget _myStory() {
@@ -452,9 +462,66 @@ void initState() {
 
 ```
 
+# GridView 객체
+> 여러가지 생각해야 할게 많구나. 
+```dart
+  Widget _imageSelectList() {
+    /*
+    [question] ======== Exception caught by rendering library =====================================================
+                The following assertion was thrown during performLayout():
+                RenderBox was not laid out: RenderViewport#565b6 NEEDS-LAYOUT NEEDS-PAINT NEEDS-COMPOSITING-BITS-UPDATE
+                'package:flutter/src/rendering/box.dart':
+                Failed assertion: line 1978 pos 12: 'hasSize'
+    [Answer] Scroll 이 겹치는 문제이다.
+     */
+    return GridView.builder(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 4, mainAxisSpacing: 1, crossAxisSpacing: 1,
+      childAspectRatio: 1, // 0.5 로 하면 세로로 직사각형, 1.5 하면 가로로 직사각형
+    ),itemCount: 100,
+      itemBuilder: (BuildContext context, int index) {
+      return Container(color: Colors.red,);
+    },);
+  }
+
+```
+
+# PhotoManager 객체
+> Device 의 사진을 불러와 보여주는 기능을 하는 위젯
+```dart
+
+```
+
+# callback Function 사용법
+```dart
+  Widget _photoWidget(
+      AssetEntity assetEntity, int size, Widget Function(Uint8List) builder) {
+    // Future 가넘어오는 값을 실시간으로 데이터를 바꿔서 위젯을 생성할 때 사용한다. 알고 있지? 단발성으로 사용할 때 쓰는거
+    return FutureBuilder(
+        future: assetEntity.thumbnailDataWithSize(ThumbnailSize(size, size)),
+        builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
+          if (snapshot.hasData) {
+            return builder(snapshot.data!);
+          } else {
+            return Container();
+          }
+        });
+  }
+}
+
+itemBuilder: (BuildContext context, int index) {
+  return _photoWidget(
+    imageList[index], 200,  (data) {  return Opacity(
+        opacity: imageList[index] == selectedImage ? 0.6 : 1,
+        child: Image.memory(data, fit: BoxFit.cover,));},
+  );
+},
 
 
 
+```
 
 
 

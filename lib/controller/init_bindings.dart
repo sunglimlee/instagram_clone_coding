@@ -1,6 +1,7 @@
 import 'package:get/get_instance/src/bindings_interface.dart';
 import 'package:get/get.dart';
 import 'package:instagram_clone_coding/controller/bottom_nav_controller.dart';
+import 'package:instagram_clone_coding/controller/upload_controller.dart';
 
 class InitBindings extends Bindings {
   @override

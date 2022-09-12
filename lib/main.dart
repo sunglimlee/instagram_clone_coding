@@ -22,8 +22,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+/*
     Get.put(
         BottomNavController()); // 이게 어디에 들어가야 하는건가? 여기 맞나? 왜 Bindings 객체 상속받은건 안되지?
+*/
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',

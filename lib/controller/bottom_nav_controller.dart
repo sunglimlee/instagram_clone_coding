@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:instagram_clone_coding/controller/upload_controller.dart';
 import 'package:instagram_clone_coding/pages/upload.dart';
 import 'package:instagram_clone_coding/widgets/etc.dart';
 import 'package:instagram_clone_coding/widgets/message_popup.dart';
@@ -25,7 +26,7 @@ class BottomNavController extends GetxController {
         _changePage(value, isTapped: isTapped);
         break;
       case PageName.UPLOAD:
-        Get.to(()=> const Upload());
+        Get.to(()=> Upload(), binding: BindingsBuilder(() {Get.put(UploadController(), permanent: true);}));
         break;
     }
   }
