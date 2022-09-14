@@ -69,45 +69,46 @@ class Upload extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () {},
-          child: Padding(
-            // leading 자체가 정해진 공간이므로 Padding 을 이용해서 사이즈를 조절해주자.
-            padding: const EdgeInsets.all(15.0),
-            child: ImageData(icon: IconsPath.closeImage),
-          ),
-        ),
-        title: const Text(
-          'New Post',
-          style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
-        ),
-        actions: [
-          GestureDetector(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: GestureDetector(
             onTap: () {},
             child: Padding(
+              // leading 자체가 정해진 공간이므로 Padding 을 이용해서 사이즈를 조절해주자.
               padding: const EdgeInsets.all(15.0),
-              child: ImageData(
-                icon: IconsPath.nextImage,
-                width: 50,
-              ),
+              child: ImageData(icon: IconsPath.closeImage),
             ),
-          )
-        ],
-      ),
-      body: Obx (()=>SingleChildScrollView(
-        child: Column(
-          children: [
-            _imagePreview(),
-            _header(),
-            _imageSelectList(),
+          ),
+          title: const Text(
+            'New Post',
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
+          ),
+          actions: [
+            GestureDetector(
+              onTap: () {},
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: ImageData(
+                  icon: IconsPath.nextImage,
+                  width: 50,
+                ),
+              ),
+            )
           ],
         ),
-      ),
-    ));
+        body: Obx(
+          () => SingleChildScrollView(
+            child: Column(
+              children: [
+                _imagePreview(),
+                _header(),
+                _imageSelectList(),
+              ],
+            ),
+          ),
+        ));
   }
 
   Widget _imagePreview() {
@@ -138,42 +139,90 @@ class Upload extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              // [question] context 를 인식하지 못한다.???
-              Get.bottomSheet(
-                  Container(height: 200,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children:
-                          [ Center(child: _sheetHandle()),
+              // 안되는건 빨리 다른 대안을 찾아보도록 하자.. 안되는것 억지로 붙들고 있는것도 시간 낭비다.
+              // Get.bottomSheet 포기했다. 다른데 찾아보니 ExpandableBottomSheet 이런것도 있던데..
+              showModalBottomSheet(
+                  context: Get.context!,
+                  // 왜 shape: 가 없는거지?
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(Get.context!).size.height -
+                        MediaQuery.of(Get.context!).padding.top,
+                  ),
+                  isScrollControlled:
+                      UploadController.to.albums.length > 10 ? true : false,
+                  builder: (_) => Container(
+                        height: UploadController.to.albums.length > 10
+                            ? Size.infinite.height
+                            : UploadController.to.albums.length * 60,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Center(child: _sheetHandle()),
                             Expanded(
-                              child: SingleChildScrollView(child: Column(children: [
-                                ...List.generate(UploadController.to.albums.length, (index) => Container(
-                                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                                  child: Text(UploadController.to.albums[index].name),
-                                )),
-                                Container(child: Text('aaa'),),
-                                Container(child: Text('aaa'),),
-                                Container(child: Text('aaa'),),
-                                Container(child: Text('aaa'),),
-                                Container(child: Text('aaa'),),
-                                Container(child: Text('aaa'),),
-                                Container(child: Text('aaa'),),
-                                Container(child: Text('aaa'),),
-                                Container(child: Text('aaa'),),
-                                Container(child: Text('aaa'),),
-                                Container(child: Text('aaa'),),
-
-
-                              ],),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    ...List.generate(
+                                        UploadController.to.albums.length,
+                                        (index) => Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 15,
+                                                      horizontal: 20),
+                                              child: Text(UploadController
+                                                  .to.albums[index].name),
+                                            )),
+/*
+                                    Container(
+                                      child: Text('aaa'),
+                                    ),
+                                    Container(
+                                      child: Text('aaa'),
+                                    ),
+                                    Container(
+                                      child: Text('aaa'),
+                                    ),
+                                    Container(
+                                      child: Text('aaa'),
+                                    ),
+                                    Container(
+                                      child: Text('aaa'),
+                                    ),
+                                    Container(
+                                      child: Text('aaa'),
+                                    ),
+                                    Container(
+                                      child: Text('aaa'),
+                                    ),
+                                    Container(
+                                      child: Text('aaa'),
+                                    ),
+                                    Container(
+                                      child: Text('aaa'),
+                                    ),
+                                    Container(
+                                      child: Text('aaa'),
+                                    ),
+                                    Container(
+                                      child: Text('aaa'),
+                                    ),
+*/
+                                  ],
+                                ),
                               ),
                             ),
                           ],
+                        ),
                       ),
-                  ),
-              backgroundColor: Colors.white,
-              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),));
-
-            } ,
+                  backgroundColor: Colors.white,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20)),
+                  ));
+            },
             child: Padding(
               padding: const EdgeInsets.all(5.0),
               child: Row(
@@ -195,7 +244,8 @@ class Upload extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 19, vertical: 5),
                 decoration: BoxDecoration(
                     color: const Color(0xff808080),
                     borderRadius: BorderRadius.circular(30)),
@@ -212,7 +262,9 @@ class Upload extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: 5,),
+              const SizedBox(
+                width: 5,
+              ),
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: const BoxDecoration(
@@ -254,11 +306,15 @@ class Upload extends StatelessWidget {
           (data) {
             return GestureDetector(
               onTap: () {
-                UploadController.to.selectedImage.value = UploadController.to.imageList[index];
+                UploadController.to.selectedImage.value =
+                    UploadController.to.imageList[index];
                 //update();
               },
               child: Opacity(
-                  opacity: UploadController.to.imageList[index] == UploadController.to.selectedImage.value ? 0.6 : 1,
+                  opacity: UploadController.to.imageList[index] ==
+                          UploadController.to.selectedImage.value
+                      ? 0.6
+                      : 1,
                   child: Image.memory(
                     data,
                     fit: BoxFit.cover,
@@ -287,15 +343,18 @@ class Upload extends StatelessWidget {
   Widget _sheetHandle() {
     // 이거 완전 대박이다. 내가 직접 이렇게 List.generate 사용법을 알고 있는거네..
     return Column(
-      children:
-      List.generate(2, (index) { return Container(margin: const EdgeInsets.only(top: 4),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(1),
-          color: Colors.black54,
-        ),
-        width: 40, height: 4,);}),
+      children: List.generate(2, (index) {
+        return Container(
+          margin: const EdgeInsets.only(top: 4),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(1),
+            color: Colors.black54,
+          ),
+          width: 40,
+          height: 4,
+        );
+      }),
     );
-
   }
 }
 
