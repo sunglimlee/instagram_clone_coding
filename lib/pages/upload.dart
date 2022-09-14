@@ -145,10 +145,28 @@ class Upload extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children:
                           [ Center(child: _sheetHandle()),
-                            ...List.generate(UploadController.to.albums.length, (index) => Container(
-                              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                              child: Text(UploadController.to.albums[index].name),
-                            )),
+                            Expanded(
+                              child: SingleChildScrollView(child: Column(children: [
+                                ...List.generate(UploadController.to.albums.length, (index) => Container(
+                                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                                  child: Text(UploadController.to.albums[index].name),
+                                )),
+                                Container(child: Text('aaa'),),
+                                Container(child: Text('aaa'),),
+                                Container(child: Text('aaa'),),
+                                Container(child: Text('aaa'),),
+                                Container(child: Text('aaa'),),
+                                Container(child: Text('aaa'),),
+                                Container(child: Text('aaa'),),
+                                Container(child: Text('aaa'),),
+                                Container(child: Text('aaa'),),
+                                Container(child: Text('aaa'),),
+                                Container(child: Text('aaa'),),
+
+
+                              ],),
+                              ),
+                            ),
                           ],
                       ),
                   ),
