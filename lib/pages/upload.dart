@@ -136,21 +136,42 @@ class Upload extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Row(
-              children: [
-                Text(
-                  //[question] The argument type 'RxString' can't be assigned to the parameter type 'String'.
-                  //[answer]
-                  UploadController.to.headerTitle.value,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
+          GestureDetector(
+            onTap: () {
+              // [question] context 를 인식하지 못한다.???
+              Get.bottomSheet(
+                  Container(height: 200,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children:
+                          [ Center(child: _sheetHandle()),
+                            ...List.generate(UploadController.to.albums.length, (index) => Container(
+                              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                              child: Text(UploadController.to.albums[index].name),
+                            )),
+                          ],
+                      ),
                   ),
-                ),
-                const Icon(Icons.arrow_drop_down),
-              ],
+              backgroundColor: Colors.white,
+              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),));
+
+            } ,
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Row(
+                children: [
+                  Text(
+                    //[question] The argument type 'RxString' can't be assigned to the parameter type 'String'.
+                    //[answer]
+                    UploadController.to.headerTitle.value,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const Icon(Icons.arrow_drop_down),
+                ],
+              ),
             ),
           ),
           Row(
@@ -243,6 +264,20 @@ class Upload extends StatelessWidget {
             return Container();
           }
         });
+  }
+
+  Widget _sheetHandle() {
+    // 이거 완전 대박이다. 내가 직접 이렇게 List.generate 사용법을 알고 있는거네..
+    return Column(
+      children:
+      List.generate(2, (index) { return Container(margin: const EdgeInsets.only(top: 4),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(1),
+          color: Colors.black54,
+        ),
+        width: 40, height: 4,);}),
+    );
+
   }
 }
 
