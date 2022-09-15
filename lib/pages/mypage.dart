@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone_coding/widgets/avatar_widget.dart';
 import 'package:instagram_clone_coding/widgets/image_data.dart';
+import 'package:get/get.dart';
 
 class MyPage extends StatelessWidget {
   const MyPage({Key? key}) : super(key: key);
@@ -44,6 +45,7 @@ class MyPage extends StatelessWidget {
           children: [
             // 총 5개정도의 영역을 나눠주면서 작업을 할거다.
             _information(),
+            _menu(),
           ],
         ),
       ),
@@ -98,7 +100,7 @@ class MyPage extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.all(15.0),
+          padding: const EdgeInsets.all(15.0),
           child: Container(
               color: Colors.transparent,
               child: const Text(
@@ -110,6 +112,49 @@ class MyPage extends StatelessWidget {
               )),
         ),
       ],
+    );
+  }
+
+  Widget _menu() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
+      child: Row(
+        children: [
+          Expanded(
+              child: Container(
+            // container 에도 alignment 가 있는데 Text 에다가 textAlign 을 주었다.
+            padding: const EdgeInsets.symmetric(vertical: 7),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(3),
+                border: Border.all(color: const Color(0xffdedede))),
+            child: const Text(
+              'Edit profile',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+          )),
+          const SizedBox(
+            width: 10,
+          ),
+          Container(
+            width: Get.width * 0.08,
+            // container 에도 alignment 가 있는데 Text 에다가 textAlign 을 주었다.
+            padding: const EdgeInsets.symmetric(vertical: 0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(3),
+              border: Border.all(color: const Color(0xffdedede)),
+              color: const Color(0xffefefef),
+            ),
+            child: ImageData(
+              // 잘봐라. 지금 이미지로 구현하고 있다.
+              icon: IconsPath.addFriend,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
