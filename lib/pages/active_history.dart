@@ -38,8 +38,33 @@ class ActiveHistory extends StatelessWidget {
           AvatarWidget(
             thumbPath:
                 'https://thumbs.dreamstime.com/b/photo-portrait-cheerful-cool-swag-trend-trendy-guy-leaving-his-feedback-social-media-network-using-smart-phone-photo-145377495.jpg',
-            type: AvatarType.TYPE3,
+            type: AvatarType.TYPE2,
             size: 40,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          const Expanded(
+            child: Text.rich(TextSpan(
+                text: '개남',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+                children: [
+                  TextSpan(
+                    text: '님이 회원님의 게시물을 좋아합니다.',
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  TextSpan(
+                    text: ' 5 일전',
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 13, color: Colors.black54
+                    ),
+                  ),
+                ])),
           )
         ],
       );
