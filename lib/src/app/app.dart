@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:instagram_clone_coding/controller/bottom_nav_controller.dart';
 import 'package:instagram_clone_coding/pages/active_history.dart';
 import 'package:instagram_clone_coding/pages/home_screen.dart';
+import 'package:instagram_clone_coding/pages/mypage.dart';
 import 'package:instagram_clone_coding/pages/search_screen.dart';
 import 'package:instagram_clone_coding/widgets/image_data.dart';
 import 'package:instagram_clone_coding/controller/bottom_nav_controller.dart';
@@ -36,7 +37,7 @@ class App extends GetView<BottomNavController> {
         _nestedNavigationForSearchFocus(),
         Container(), // Bottom 의 Index 랑 매칭이 되기 때문에 더미를 넣은것const 일뿐
         const ActiveHistory(),
-        const Center(child: Text('MYPAGE'),),
+        const MyPage(),
       ],
     );
   }
