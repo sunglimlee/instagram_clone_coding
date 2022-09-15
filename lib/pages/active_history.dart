@@ -21,23 +21,52 @@ class ActiveHistory extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _newRecentlyActiveView(),
-            _newRecentlyThisWeekView(),
-            _newRecentlyThisMonthView(),
+            _newRecentlyView('오늘'),
+            _newRecentlyView('이번주'),
+            _newRecentlyView('이번달'),
           ],
         ),
       ),
     );
   }
 
-  Widget _newRecentlyActiveView() {
-    Widget _activeItemOne() {
-      // code expand shortcut ctrl + '+' or '-'
-      return Row(
+
+  Widget _newRecentlyView(String title) {
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+      // 집중해라. 그냥 Column 전체 바깥쪽에 공간을 둔다.
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch, // 전체사용공간 확보로 가로정렬 막아준다.
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 15,
+            ),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          _activeItemOne(),
+          _activeItemOne(),
+          _activeItemOne(),
+          _activeItemOne(),
+          _activeItemOne(),
+        ],
+      ),
+    );
+  }
+
+  Widget _activeItemOne() {
+    // code expand shortcut ctrl + '+' or '-'
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Row(
         children: [
           AvatarWidget(
             thumbPath:
-                'https://thumbs.dreamstime.com/b/photo-portrait-cheerful-cool-swag-trend-trendy-guy-leaving-his-feedback-social-media-network-using-smart-phone-photo-145377495.jpg',
+            'https://thumbs.dreamstime.com/b/photo-portrait-cheerful-cool-swag-trend-trendy-guy-leaving-his-feedback-social-media-network-using-smart-phone-photo-145377495.jpg',
             type: AvatarType.TYPE2,
             size: 40,
           ),
@@ -52,7 +81,7 @@ class ActiveHistory extends StatelessWidget {
                 ),
                 children: [
                   TextSpan(
-                    text: '님이 회원님의 게시물을 좋아합니다.',
+                    text: '님이 회원님의 게시물을 좋아합니다. 계속 활동을 부탁드립니다. 현재 많은 분들이 우크라이나 전쟁에 대해서 이야기 하고 있습니다.',
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
                     ),
@@ -60,70 +89,15 @@ class ActiveHistory extends StatelessWidget {
                   TextSpan(
                     text: ' 5 일전',
                     style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 13, color: Colors.black54
-                    ),
+                        fontWeight: FontWeight.normal,
+                        fontSize: 13,
+                        color: Colors.black54),
                   ),
                 ])),
           )
         ],
-      );
-    }
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-      // 집중해라. 그냥 Column 전체 바깥쪽에 공간을 둔다.
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch, // 전체사용공간 확보로 가로정렬 막아준다.
-        children: [
-          const Text(
-            '오늘',
-            style: TextStyle(
-              fontSize: 15,
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          _activeItemOne(),
-        ],
       ),
     );
   }
 
-  Widget _newRecentlyThisWeekView() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-      // 집중해라. 그냥 Column 전체 바깥쪽에 공간을 둔다.
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch, // 전체사용공간 확보로 가로정렬 막아준다.
-        children: const [
-          Text(
-            '이번주',
-            style: TextStyle(
-              fontSize: 15,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _newRecentlyThisMonthView() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-      // 집중해라. 그냥 Column 전체 바깥쪽에 공간을 둔다.
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch, // 전체사용공간 확보로 가로정렬 막아준다.
-        children: const [
-          Text(
-            '이번달',
-            style: TextStyle(
-              fontSize: 15,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
