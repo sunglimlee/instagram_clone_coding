@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_clone_coding/controller/bottom_nav_controller.dart';
+import 'package:instagram_clone_coding/pages/active_history.dart';
 import 'package:instagram_clone_coding/pages/home_screen.dart';
 import 'package:instagram_clone_coding/pages/search_screen.dart';
 import 'package:instagram_clone_coding/widgets/image_data.dart';
@@ -31,11 +32,11 @@ class App extends GetView<BottomNavController> {
     return IndexedStack(
       index: controller.pageIndex.value,
       children: [
-        HomeScreen(),
+        const HomeScreen(),
         _nestedNavigationForSearchFocus(),
-        Center(child: Text('UPLOAD'),),
-        Center(child: Text('ACTIVITY'),),
-        Center(child: Text('MYPAGE'),),
+        Container(), // Bottom 의 Index 랑 매칭이 되기 때문에 더미를 넣은것const 일뿐
+        const ActiveHistory(),
+        const Center(child: Text('MYPAGE'),),
       ],
     );
   }
@@ -88,3 +89,4 @@ class App extends GetView<BottomNavController> {
     );
   }
 }
+
