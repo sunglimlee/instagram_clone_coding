@@ -54,34 +54,60 @@ class MyPage extends StatelessWidget {
     Widget _staticsOne(String title, int value) {
       return Column(
         children: [
-          Text(value.toString(), style: const TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold ),),
-          Text(title, style: const TextStyle(fontSize: 15, color: Colors.black, ),),
+          Text(
+            value.toString(),
+            style: const TextStyle(
+                fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 15,
+              color: Colors.black,
+            ),
+          ),
         ],
       );
     }
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 0.0),
           child: Row(
             children: [
               AvatarWidget(
-                  thumbPath:
-                      'https://thumbs.dreamstime.com/b/photo-portrait-cheerful-cool-swag-trend-trendy-guy-leaving-his-feedback-social-media-network-using-smart-phone-photo-145377495.jpg',
-                  type: AvatarType.TYPE3, size: 80,),
+                thumbPath:
+                    'https://thumbs.dreamstime.com/b/photo-portrait-cheerful-cool-swag-trend-trendy-guy-leaving-his-feedback-social-media-network-using-smart-phone-photo-145377495.jpg',
+                type: AvatarType.TYPE3,
+                size: 80,
+              ),
               // 오른쪽에 전부다 차지하게 하려면
-              Expanded(child: Row(
+              Expanded(
+                  child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   // 균등하게 보이도록 Expanded 를 각각 감싸준다.
-                Expanded(child: _staticsOne('Post', 15)),
-                Expanded(child: _staticsOne('Followers', 15)),
-                Expanded(child: _staticsOne('Following', 15)),
-
-              ],))
+                  Expanded(child: _staticsOne('Post', 15)),
+                  Expanded(child: _staticsOne('Followers', 15)),
+                  Expanded(child: _staticsOne('Following', 15)),
+                ],
+              ))
             ],
           ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(15.0),
+          child: Container(
+              color: Colors.transparent,
+              child: const Text(
+                '안녕하세요. Steve 입니다. 구독과 좋아요 부탁드립니다!.~',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.black,
+                ),
+              )),
         ),
       ],
     );
