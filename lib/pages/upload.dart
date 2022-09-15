@@ -73,7 +73,9 @@ class Upload extends StatelessWidget {
           backgroundColor: Colors.white,
           elevation: 0,
           leading: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Get.back();
+            },
             child: Padding(
               // leading 자체가 정해진 공간이므로 Padding 을 이용해서 사이즈를 조절해주자.
               padding: const EdgeInsets.all(15.0),
