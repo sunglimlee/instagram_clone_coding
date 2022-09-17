@@ -72,7 +72,7 @@ class UploadController extends GetxController {
     // [answer] 괄호로 넣어주니깐 되었다.
     headerTitle(albums.first.name);
     await _pagingPhotos();
-    update();
+    //update();
   }
 
   Future<void> _pagingPhotos() async {

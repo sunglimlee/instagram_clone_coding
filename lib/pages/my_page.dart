@@ -2,9 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:instagram_clone_coding/widgets/avatar_widget.dart';
 import 'package:instagram_clone_coding/widgets/image_data.dart';
 import 'package:get/get.dart';
+import 'package:instagram_clone_coding/widgets/user_card.dart';
+import 'package:get/get.dart';
 
-class MyPage extends StatelessWidget {
-  const MyPage({Key? key}) : super(key: key);
+class MyPage extends StatefulWidget {
+  MyPage({Key? key}) : super(key: key);
+
+  @override
+  State<MyPage> createState() => _MyPageState();
+}
+
+class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
+  late TabController tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(length: 2, vsync: this);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +31,7 @@ class MyPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         title: const Text(
-          '개발하는 남자',
+          '개발하는남자',
           style: TextStyle(
               fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
         ),
@@ -46,6 +61,10 @@ class MyPage extends StatelessWidget {
             // 총 5개정도의 영역을 나눠주면서 작업을 할거다.
             _information(),
             _menu(),
+            _discoverPeople(),
+            const SizedBox(height: 20,),
+            _tabMenu(),
+            _tabView(),
           ],
         ),
       ),
@@ -156,5 +175,79 @@ class MyPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _discoverPeople() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              Text(
+                'Discover People',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: Colors.black),
+              ),
+              Text(
+                'See All',
+                style: TextStyle(fontSize: 15, color: Colors.black),
+              ),
+            ],
+          ),
+        ),
+        SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: List.generate(
+                20,
+                (index) => UserCard(
+                    userId: '개남$index',
+                    description: '개남$index님이 팔로우합니다.')).toList(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _tabMenu() {
+    // TabBar 사용
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: TabBar(
+          indicatorColor: Colors.black,
+          indicatorWeight: 1,
+          controller: tabController,
+          tabs: [
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: ImageData(icon: IconsPath.gridViewOn),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: ImageData(icon: IconsPath.gridViewOff),
+            ),
+          ]),
+    );
+  }
+
+  Widget _tabView() {
+    return GridView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: 100,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 1, mainAxisSpacing: 1, crossAxisSpacing: 1),
+        itemBuilder: (BuildContext context, int index) {
+      return Container(
+        color: Colors.grey,
+        child: Image.network('https://d3544la1u8djza.cloudfront.net/APHI/Blog/2020/05-14/How+Do+Dogs+Get+Hernias+_+ASPCA+Pet+Insurance+_+shiba+inu+with+an+orange+collar+resting+on+a+tan+chair-min.jpg',
+        fit: BoxFit.cover,
+        ),
+      );
+        });
   }
 }
