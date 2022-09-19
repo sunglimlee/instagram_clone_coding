@@ -2,17 +2,20 @@ import 'package:get/get.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class UploadController extends GetxController {
-  static UploadController get to => Get.find<UploadController>(); // to 로 언제든지 찾을 수 있도록 하고
-
   // [question] Rx 값을 다루는데 문제가 될때
   // [answer] https://chornthorn.github.io/getx-docs/state-management/reactive-state-manager/index
   //var _selectedImage = const AssetEntity(id: 'temp', typeInt: 1, width: 100, height: 100).obs;
   //var _selectedImage = AssetEntity(id: 1.toString(), typeInt: 0, width: 100, height: 100).obs;
   //AssetEntity? _selectedImage = null.obs as AssetEntity?;
   Rx<AssetEntity?> selectedImage = (null as AssetEntity?).obs;
-  var imageList = <AssetEntity>[].obs;
-  List<AssetPathEntity> _albums = <AssetPathEntity>[].obs;
   var headerTitle = ''.obs;
+  var imageList = <AssetEntity>[].obs;
+
+  // 앨범의 리스트는 누르는순간 builder 를 통해서 새롭게 만들고 그때 이민 이 album 이 정해져 있기 때문에
+  List<AssetPathEntity> _albums = <AssetPathEntity>[]; // 이건 obs 를 이욯해 상태관리를 할 필요가 없다는것
+
+  // 지금 이게 필요는 없다. 나중에 이게 여러군데서 쓰일때 사용하면 좋은거지 Upload 객체 페이지 하나에서 사용하는데 의미가 거의 없지.
+  //static UploadController get to => Get.find<UploadController>(); // to 로 언제든지 찾을 수 있도록 하고
 
 /*
   get selectedImage => _selectedImage;

@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:instagram_clone_coding/controller/upload_controller.dart';
 
 // var albums = <AssetPathEntity>[]; // 이거 똑같은 뜻인거 맞지? 확실하지?
-class Upload extends StatelessWidget {
+class Upload extends GetView<UploadController> {
   const Upload({Key? key}) : super(key: key);
 
 /*
@@ -100,8 +100,7 @@ class Upload extends StatelessWidget {
             )
           ],
         ),
-        body: Obx(
-          () => SingleChildScrollView(
+        body: SingleChildScrollView(
             child: Column(
               children: [
                 _imagePreview(),
@@ -110,7 +109,7 @@ class Upload extends StatelessWidget {
               ],
             ),
           ),
-        ));
+        );
   }
 
   Widget _imagePreview() {
@@ -119,18 +118,21 @@ class Upload extends StatelessWidget {
         width: width,
         height: width,
         color: Colors.grey,
-        child: UploadController.to.selectedImage.value == null
-            ? Container()
-            : _photoWidget(
-                UploadController.to.selectedImage.value!,
-                width.toInt(),
-                (p0) {
-                  return Image.memory(
-                    p0,
-                    fit: BoxFit.cover,
-                  );
-                },
-              ));
+        child: Obx(
+            ()=> controller.selectedImage.value == null
+              ? Container()
+              : _photoWidget(
+                  controller.selectedImage.value!,
+                  width.toInt(),
+                  (p0) {
+                    return Image.memory(
+                      p0,
+                      fit: BoxFit.cover,
+                    );
+                  },
+                ),
+        )
+    );
   }
 
   Widget _header() {
@@ -151,11 +153,11 @@ class Upload extends StatelessWidget {
                         MediaQuery.of(Get.context!).padding.top,
                   ),
                   isScrollControlled:
-                      UploadController.to.albums.length > 10 ? true : false,
+                      controller.albums.length > 10 ? true : false,
                   builder: (_) => Container(
-                        height: UploadController.to.albums.length > 10
+                        height: controller.albums.length > 10
                             ? Size.infinite.height
-                            : UploadController.to.albums.length * 60,
+                            : controller.albums.length * 60,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
@@ -167,14 +169,13 @@ class Upload extends StatelessWidget {
                                       CrossAxisAlignment.stretch,
                                   children: [
                                     ...List.generate(
-                                        UploadController.to.albums.length,
+                                        controller.albums.length,
                                         (index) => Container(
                                               padding:
                                                   const EdgeInsets.symmetric(
                                                       vertical: 15,
                                                       horizontal: 20),
-                                              child: Text(UploadController
-                                                  .to.albums[index].name),
+                                              child: Text(controller.albums[index].name),
                                             )),
 /*
                                     Container(
@@ -229,13 +230,15 @@ class Upload extends StatelessWidget {
               padding: const EdgeInsets.all(5.0),
               child: Row(
                 children: [
-                  Text(
-                    //[question] The argument type 'RxString' can't be assigned to the parameter type 'String'.
-                    //[answer]
-                    UploadController.to.headerTitle.value,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
+                  Obx(
+                    ()=> Text(
+                      //[question] The argument type 'RxString' can't be assigned to the parameter type 'String'.
+                      //[answer]
+                      controller.headerTitle.value,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                      ),
                     ),
                   ),
                   const Icon(Icons.arrow_drop_down),
@@ -291,40 +294,44 @@ class Upload extends StatelessWidget {
                 Failed assertion: line 1978 pos 12: 'hasSize'
     [Answer] Scroll 이 겹치는 문제이다.
      */
-    return GridView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-        mainAxisSpacing: 1,
-        crossAxisSpacing: 1,
-        childAspectRatio: 1,
+    return Obx( // obs 에 대응하는 곳들을 전부 obx 로 잡아 주었다.
+        ()=> GridView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4,
+          mainAxisSpacing: 1,
+          crossAxisSpacing: 1,
+          childAspectRatio: 1,
+        ),
+        itemCount: controller.imageList.length,
+        itemBuilder: (BuildContext context, int index) {
+          return _photoWidget(
+            controller.imageList[index],
+            200,
+            (data) {
+              return Obx(
+                ()=> GestureDetector(
+                  onTap: () {
+                    controller.selectedImage.value =
+                        controller.imageList[index];
+                    //update();
+                  },
+                  child: Opacity(
+                      opacity: controller.imageList[index] ==
+                              controller.selectedImage.value
+                          ? 0.6
+                          : 1,
+                      child: Image.memory(
+                        data,
+                        fit: BoxFit.cover,
+                      )),
+                ),
+              );
+            },
+          );
+        },
       ),
-      itemCount: UploadController.to.imageList.length,
-      itemBuilder: (BuildContext context, int index) {
-        return _photoWidget(
-          UploadController.to.imageList[index],
-          200,
-          (data) {
-            return GestureDetector(
-              onTap: () {
-                UploadController.to.selectedImage.value =
-                    UploadController.to.imageList[index];
-                //update();
-              },
-              child: Opacity(
-                  opacity: UploadController.to.imageList[index] ==
-                          UploadController.to.selectedImage.value
-                      ? 0.6
-                      : 1,
-                  child: Image.memory(
-                    data,
-                    fit: BoxFit.cover,
-                  )),
-            );
-          },
-        );
-      },
     );
   }
 
