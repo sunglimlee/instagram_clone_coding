@@ -1,7 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_clone_coding/controller/bottom_nav_controller.dart';
 import 'package:instagram_clone_coding/controller/init_bindings.dart';
+import 'package:instagram_clone_coding/firebase_options.dart';
 import 'package:instagram_clone_coding/pages/about_screen.dart';
 import 'package:instagram_clone_coding/pages/home_screen.dart';
 import 'package:instagram_clone_coding/pages/like_screen.dart';
@@ -12,7 +14,9 @@ import 'package:instagram_clone_coding/pages/search_screen_detail_old.dart';
 import 'package:instagram_clone_coding/src/app/app.dart';
 import 'package:instagram_clone_coding/widgets/etc.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -31,7 +35,10 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        appBarTheme: const AppBarTheme(backgroundColor: Colors.white, titleTextStyle: TextStyle(color: Colors.black),),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          titleTextStyle: TextStyle(color: Colors.black),
+        ),
       ),
       home: App(),
       initialBinding: InitBindings(),
@@ -69,7 +76,7 @@ class AppOldVersion extends StatelessWidget {
                 icon: Icon(Icons.arrow_back, color: Colors.black),
                 onPressed: () => BottomNavigationBarController().back(),),
           ),
-*//*
+*/ /*
 
           bottomNavigationBar: BottomNavigationBar(
             onTap: (index)=> bottomNavigationBarOnTap(context, index),
@@ -144,7 +151,7 @@ class AppOldVersion extends StatelessWidget {
                 });
               },
             );
-*//*
+*/ /*
 
 
         }
@@ -168,7 +175,7 @@ class AppOldVersion extends StatelessWidget {
         Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchFocus()));
         break;
       }
-*//*
+*/ /*
       default : {
       }
     }
