@@ -47,14 +47,15 @@ class UploadDescription extends GetView<UploadController> {
           bottom: 0,
           child: GestureDetector(
             onTap: () {
-              // 현재 body 를 이용해서 GetstureDetector 를 감쌌기 때문에 body 안을 눌러야 없어진다.
+              // 현재 body 를 이용해서 GestureDetector 를 감쌌기 때문에 body 안을 눌러야 없어진다.
               FocusManager.instance.primaryFocus?.unfocus();
             },
             child: SingleChildScrollView(
               child: Column(
-                //crossAxisAlignment: CrossAxisAlignment.stretch, // 항상 헷갈려
+                crossAxisAlignment: CrossAxisAlignment.stretch, // 넓이를 전체 사용한다.
                 children: [
                   _description(),
+                  _infoOnt('사람태그하기'),
                 ],
               ),
             ),
@@ -92,6 +93,16 @@ class UploadDescription extends GetView<UploadController> {
           ),
         ))
       ],
+    );
+  }
+
+  Widget _infoOnt(String title) {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Text(
+        title,
+        style: const TextStyle(fontSize: 17),
+      ),
     );
   }
 }
