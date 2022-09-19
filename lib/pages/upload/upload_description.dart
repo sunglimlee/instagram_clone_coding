@@ -13,19 +13,28 @@ class UploadDescription extends GetView<UploadController> {
       appBar: AppBar(
         elevation: 0,
         leading: GestureDetector(
-          onTap: Get.back, // 이런 디테일... 파라미터없는 보이드 함수 를 그래도 이름으로 대입하고 있잖아.. 이런 디테일 좋네.
+          onTap: Get.back,
+          // 이런 디테일... 파라미터없는 보이드 함수 를 그래도 이름으로 대입하고 있잖아.. 이런 디테일 좋네.
           child: Padding(
             padding: const EdgeInsets.all(15.0),
-            child: ImageData(icon: IconsPath.backBtnIcon, width: 50,),
+            child: ImageData(
+              icon: IconsPath.backBtnIcon,
+              width: 50,
+            ),
           ),
         ),
-        title: const Text('새 게시물', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20 ),),
+        title: const Text(
+          '새 게시물',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        ),
         actions: [
           GestureDetector(
             onTap: () {},
             child: Padding(
               padding: const EdgeInsets.all(15),
-              child: ImageData(icon: IconsPath.uploadComplete,),
+              child: ImageData(
+                icon: IconsPath.uploadComplete,
+              ),
             ),
           )
         ],
@@ -46,8 +55,19 @@ class UploadDescription extends GetView<UploadController> {
       children: [
         Padding(
           padding: const EdgeInsets.all(15.0),
-          child: SizedBox(width: 60, height: 60, child: Image.file(controller.filteredImage!, fit: BoxFit.cover,),),
-        )
+          child: SizedBox(
+            width: 60,
+            height: 60,
+            child: Image.file(
+              controller.filteredImage!,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        const Expanded(
+            child: TextField(
+          maxLines: null,
+        ))
       ],
     );
   }
