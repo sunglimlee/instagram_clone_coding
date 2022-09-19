@@ -39,6 +39,7 @@ dependencies:
   expandable_text: ^2.3.0
   quiver: ^3.1.0
   photo_manager: ^2.2.1
+  photofilters: ^3.0.1
 
 dev_dependencies:
   flutter_test:

@@ -5,6 +5,8 @@ import 'package:instagram_clone_coding/widgets/image_data.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:get/get.dart';
 import 'package:instagram_clone_coding/controller/upload_controller.dart';
+import 'package:path/path.dart';
+import 'package:photofilters/photofilters.dart';
 
 // var albums = <AssetPathEntity>[]; // 이거 똑같은 뜻인거 맞지? 확실하지?
 class Upload extends GetView<UploadController> {
@@ -89,7 +91,9 @@ class Upload extends GetView<UploadController> {
         ),
         actions: [
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              controller.gotoImageFilter();
+            },
             child: Padding(
               padding: const EdgeInsets.all(15.0),
               child: ImageData(

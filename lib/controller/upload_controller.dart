@@ -1,5 +1,12 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:instagram_clone_coding/pages/upload/upload_description.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:path/path.dart';
+import 'package:photofilters/photofilters.dart';
+import 'package:image/image.dart' as imageLib;
 
 class UploadController extends GetxController {
   // [question] Rx 값을 다루는데 문제가 될때
@@ -10,6 +17,7 @@ class UploadController extends GetxController {
   Rx<AssetEntity?> selectedImage = (null as AssetEntity?).obs;
   var headerTitle = ''.obs;
   var imageList = <AssetEntity>[].obs;
+  File? filteredImage; // 여기봐라. late 로 하지 않고 null 이 될 수 있다고 하고 있다.
 
   // 앨범의 리스트는 누르는순간 builder 를 통해서 새롭게 만들고 그때 이민 이 album 이 정해져 있기 때문에
   List<AssetPathEntity> _albums = <AssetPathEntity>[]; // 이건 obs 를 이욯해 상태관리를 할 필요가 없다는것
@@ -87,4 +95,30 @@ class UploadController extends GetxController {
     selectedImage.value = imageList.first; // 이부분이 프리뷰 이미지를 위한 변수,
   }
 
+  void gotoImageFilter() async { // 이미지 필터 처리하는 부분
+    // file 이 future 로 감싸져 있기때문에 먼저 file 을 빼내고 나서
+    var file = await selectedImage.value!.file;
+    var fileName = basename(file!.path);
+    var image = imageLib.decodeImage(file.readAsBytesSync());
+    image = imageLib.copyResize(image!, width: 1000);
+    var imagefile = await Navigator.push(
+      Get.context!,
+      MaterialPageRoute(
+        builder: (context) => PhotoFilterSelector(
+          title: const Text("Photo Filter Example"),
+          image: image!,
+          filters: presetFiltersList,
+          filename: fileName,
+          loader: const Center(child: CircularProgressIndicator()),
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+    // 여기서 궁금한게 필터가 적용되어 이미지 자체가 변경이 된다는 건가?
+    // 필터가 되어진 파일을 추출한다.?
+    if (imagefile != null && imagefile.containsKey('image_filtered')) {
+      filteredImage = imagefile['image_filtered'];
+      Get.to(() => const UploadDescription());
+    }
+  }
 }
