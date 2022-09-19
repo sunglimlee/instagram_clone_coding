@@ -4,7 +4,7 @@ import 'package:photo_manager/photo_manager.dart';
 class UploadController extends GetxController {
   // [question] Rx 값을 다루는데 문제가 될때
   // [answer] https://chornthorn.github.io/getx-docs/state-management/reactive-state-manager/index
-  //var _selectedImage = const AssetEntity(id: 'temp', typeInt: 1, width: 100, height: 100).obs;
+  //var _selectedImage = const AssetEntity(id: 'temp', typeInt: 1, width: 100, height: 100).obs; // 실제로 개남은 이렇게 했지
   //var _selectedImage = AssetEntity(id: 1.toString(), typeInt: 0, width: 100, height: 100).obs;
   //AssetEntity? _selectedImage = null.obs as AssetEntity?;
   Rx<AssetEntity?> selectedImage = (null as AssetEntity?).obs;
@@ -35,53 +35,56 @@ class UploadController extends GetxController {
   }
 */
 
-  List<AssetPathEntity> get albums => _albums;
+  List<AssetPathEntity> get albums => _albums; // get 과 set 을 통해서 _albums 의 내용을 그대로 다루고 있다는 것.
   set albums(List<AssetPathEntity> value) {
     _albums = value;
   }
 
   @override
-  void onInit() {
+  void onInit() { // 컨트롤러가 put 이되면서 객체가 생성될 때 이부분을 통해서 사진이 로드가 된다.
     super.onInit();
-    _loadPhoto();
+    loadPhoto();
 
   }
 
-  void _loadPhoto() async {
+  void loadPhoto() async { // 비동기화로 진행하고
     var result = await PhotoManager
-        .requestPermissionExtend(); // PermissionState will be returned.
-    if (result.isAuth) {
-      albums = await PhotoManager.getAssetPathList(
-          type: RequestType.image,
+        .requestPermissionExtend(); // PermissionState will be returned. // 퍼미션 받을 때 까지 기다려서 다음줄로 넘어가고
+    if (result.isAuth) { // 퍼미션이 허락되었으면
+      albums = await PhotoManager.getAssetPathList( // 포토메니져를 이용해서 리스트를 받아와서 기다리고
+          type: RequestType.image, // 이미지 타입이고
           filterOption: FilterOptionGroup(
               imageOption: const FilterOption(
                   sizeConstraint:
-                  SizeConstraint(minHeight: 100, minWidth: 100)),
+                  SizeConstraint(minHeight: 100, minWidth: 100)), // 사이즈 제약조건을 주고
               orders: [
-                const OrderOption(
+                const OrderOption( // 정렬방식을 정하고
                   type: OrderOptionType.createDate,
                   asc: false,
                 ), // 최신이미지 먼저본다.
               ]));
-      _loadData();
+      loadData(); // albums 리스트 값이 다 들어오고 나면 _loadData 를 실행하기 시작해라는 뜻
     } else {
       // message 나 권한 요청
     }
   }
 
-  void _loadData() async {
+  void loadData({int whichAlbums = 0}) async { // 이것도 비동기로
     print(' 값은 ${albums.first.name}');
     // [question] Unhandled Exception: type 'String' is not a subtype of type 'RxString' in type cast
     // [answer] 괄호로 넣어주니깐 되었다.
-    headerTitle(albums.first.name);
-    await _pagingPhotos();
+    headerTitle(albums[whichAlbums].name); // headerTitle 변경하고
+    await _pagingPhotos(whichAlbums: whichAlbums);
     //update();
   }
 
-  Future<void> _pagingPhotos() async {
-    var photos = await albums.first.getAssetListPaged(page: 0, size: 30);
-    imageList.addAll(photos);
-    selectedImage.value = imageList.first;
+  // 변경된 이미지에 맞추서 이미지리스트를 새로 만드는 부분.
+  // 추후 이 imageList 를 이용해서 리스트를 화면에 뿌려주게 된다.
+  Future<void> _pagingPhotos({int whichAlbums = 0}) async {
+    imageList.clear();
+    var photos = await albums[whichAlbums].getAssetListPaged(page: 0, size: 30);
+    imageList.addAll(photos); // 이부분이 리스트르 위한 변수
+    selectedImage.value = imageList.first; // 이부분이 프리뷰 이미지를 위한 변수,
   }
 
 }
