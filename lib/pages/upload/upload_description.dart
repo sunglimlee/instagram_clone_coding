@@ -39,20 +39,28 @@ class UploadDescription extends GetView<UploadController> {
           )
         ],
       ),
-      body: GestureDetector(
-        onTap: () {
-          // 현재 body 를 이용해서 GetstureDetector 를 감쌌기 때문에 body 안을 눌러야 없어진다.
-          FocusManager.instance.primaryFocus?.unfocus();
-        },
-        child: SingleChildScrollView(
-          child: Column(
-            //crossAxisAlignment: CrossAxisAlignment.stretch, // 항상 헷갈려
-            children: [
-              _description(),
-            ],
+      body: Stack(children: [
+        Positioned(
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+          child: GestureDetector(
+            onTap: () {
+              // 현재 body 를 이용해서 GetstureDetector 를 감쌌기 때문에 body 안을 눌러야 없어진다.
+              FocusManager.instance.primaryFocus?.unfocus();
+            },
+            child: SingleChildScrollView(
+              child: Column(
+                //crossAxisAlignment: CrossAxisAlignment.stretch, // 항상 헷갈려
+                children: [
+                  _description(),
+                ],
+              ),
+            ),
           ),
         ),
-      ),
+      ]),
     );
   }
 
