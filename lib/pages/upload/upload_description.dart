@@ -55,7 +55,9 @@ class UploadDescription extends GetView<UploadController> {
                 crossAxisAlignment: CrossAxisAlignment.stretch, // 넓이를 전체 사용한다.
                 children: [
                   _description(),
+                  line,
                   _infoOnt('사람태그하기'),
+                  line,
                 ],
               ),
             ),
@@ -95,6 +97,11 @@ class UploadDescription extends GetView<UploadController> {
       ],
     );
   }
+
+  // 이건 알고보니 그냥 getter, setter 잖아. 그냥 이렇게 사용할 수도 있구나.
+  Widget get line => const Divider(
+        color: Colors.grey,
+      );
 
   Widget _infoOnt(String title) {
     return Padding(
