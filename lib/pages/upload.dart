@@ -69,47 +69,47 @@ class Upload extends GetView<UploadController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: GestureDetector(
-            onTap: () {
-              Get.back();
-            },
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: GestureDetector(
+          onTap: () {
+            Get.back();
+          },
+          child: Padding(
+            // leading 자체가 정해진 공간이므로 Padding 을 이용해서 사이즈를 조절해주자.
+            padding: const EdgeInsets.all(15.0),
+            child: ImageData(icon: IconsPath.closeImage),
+          ),
+        ),
+        title: const Text(
+          'New Post',
+          style: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
+        ),
+        actions: [
+          GestureDetector(
+            onTap: () {},
             child: Padding(
-              // leading 자체가 정해진 공간이므로 Padding 을 이용해서 사이즈를 조절해주자.
               padding: const EdgeInsets.all(15.0),
-              child: ImageData(icon: IconsPath.closeImage),
-            ),
-          ),
-          title: const Text(
-            'New Post',
-            style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
-          ),
-          actions: [
-            GestureDetector(
-              onTap: () {},
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: ImageData(
-                  icon: IconsPath.nextImage,
-                  width: 50,
-                ),
+              child: ImageData(
+                icon: IconsPath.nextImage,
+                width: 50,
               ),
-            )
+            ),
+          )
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _imagePreview(),
+            _header(),
+            _imageSelectList(),
           ],
         ),
-        body: SingleChildScrollView(
-            child: Column(
-              children: [
-                _imagePreview(),
-                _header(),
-                _imageSelectList(),
-              ],
-            ),
-          ),
-        );
+      ),
+    );
   }
 
   Widget _imagePreview() {
@@ -119,7 +119,7 @@ class Upload extends GetView<UploadController> {
         height: width,
         color: Colors.grey,
         child: Obx(
-            ()=> controller.selectedImage.value == null
+          () => controller.selectedImage.value == null
               ? Container()
               : _photoWidget(
                   controller.selectedImage.value!,
@@ -131,8 +131,7 @@ class Upload extends GetView<UploadController> {
                     );
                   },
                 ),
-        )
-    );
+        ));
   }
 
   Widget _header() {
@@ -154,7 +153,7 @@ class Upload extends GetView<UploadController> {
                   ),
                   isScrollControlled:
                       controller.albums.length > 10 ? true : false,
-                  builder: (_) => Container(
+                  builder: (_) => SizedBox(
                         height: controller.albums.length > 10
                             ? Size.infinite.height
                             : controller.albums.length * 60,
@@ -170,12 +169,29 @@ class Upload extends GetView<UploadController> {
                                   children: [
                                     ...List.generate(
                                         controller.albums.length,
-                                        (index) => Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 15,
-                                                      horizontal: 20),
-                                              child: Text(controller.albums[index].name),
+                                        (index) => GestureDetector(
+                                              onTap: () {
+                                                // [question] HeaderTitle 이 변경이 되어야 하고..
+                                                // [answer] HeaderTitle 의 값을 바꾸면 obs -> obx 로 자동으로 갱신..
+                                                //controller.headerTitle(controller.albums[index].name);
+                                                controller.loadData(whichAlbums: index); // 이부분 곰곰히 생각해보자. controller.loadPhoto() 를 하게되면 다운로드 받은 파일을 갱신할 수 잇지.
+                                                Get.back();
+                                                // [question] 각각의 이미지 리스트가 변경이 되어야 하고
+                                                // [answer] 이 리스트도 다시 호출 해주면 될 것 같은데..
+
+                                                //_imageSelectList();
+                                                // [question] 이미지 프리뷰 부분이 변경이 되어야 하고
+                                                // [answer] 이부분도 리스트를 다시 호출 해주면 될 것 같은데
+                                                //_imagePreview();
+                                              },
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 15,
+                                                        horizontal: 20),
+                                                child: Text(controller
+                                                    .albums[index].name),
+                                              ),
                                             )),
 /*
                                     Container(
@@ -231,7 +247,7 @@ class Upload extends GetView<UploadController> {
               child: Row(
                 children: [
                   Obx(
-                    ()=> Text(
+                    () => Text(
                       //[question] The argument type 'RxString' can't be assigned to the parameter type 'String'.
                       //[answer]
                       controller.headerTitle.value,
@@ -294,8 +310,9 @@ class Upload extends GetView<UploadController> {
                 Failed assertion: line 1978 pos 12: 'hasSize'
     [Answer] Scroll 이 겹치는 문제이다.
      */
-    return Obx( // obs 에 대응하는 곳들을 전부 obx 로 잡아 주었다.
-        ()=> GridView.builder(
+    return Obx(
+      // obs 에 대응하는 곳들을 전부 obx 로 잡아 주었다.
+      () => GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -304,27 +321,32 @@ class Upload extends GetView<UploadController> {
           crossAxisSpacing: 1,
           childAspectRatio: 1,
         ),
+        // 위에 Obx 로 감싸주었기 때문에 값의 변경이 생기면 자동으로 이부분을 갱신한다.
+        // 그래서 변경되었다치고 계속 작업을 이어나가면 되는거지.
         itemCount: controller.imageList.length,
-        itemBuilder: (BuildContext context, int index) {
+        itemBuilder: (BuildContext context, int index) { // 길이에 맞춰서 다시금 빌더가 된다.
           return _photoWidget(
+            // 이부분을 잘 봐라. AssetEntity 를 사용하고 있지.
+            // 왜냐고? 모든 OS 애 적절히 대응하려고
+            // 추후 thumbnailDataWithSize 를 이용해서 그림을 받아올 때 이 함수의 리턴값이 Future<Unit8List> 이므로 FutureBuilder 함수를 이용해야 한다.
             controller.imageList[index],
             200,
-            (data) {
+            (data) { // 여기서도 콜백함수를 이용하고 있다.
               return Obx(
-                ()=> GestureDetector(
+                () => GestureDetector(
                   onTap: () {
-                    controller.selectedImage.value =
+                    controller.selectedImage.value = // 프리뷰 이미지를 위한 변수를 바꾸어주고, obx 이므로 자동으로 프리뷰 이미지가 바뀌고
                         controller.imageList[index];
                     //update();
                   },
-                  child: Opacity(
+                  child: Opacity( // 해당 이미지에다가 Opacity 를 적용하였고
                       opacity: controller.imageList[index] ==
                               controller.selectedImage.value
                           ? 0.6
                           : 1,
-                      child: Image.memory(
+                      child: Image.memory( // unit8List 파일을 불러들이기 위해 Image.memory 를 사용했다.,
                         data,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.cover, // 꽉 채웠고
                       )),
                 ),
               );
@@ -335,12 +357,13 @@ class Upload extends GetView<UploadController> {
     );
   }
 
-  Widget _photoWidget(
+  Widget _photoWidget( // 이부분은 아직 잘 모르겠다.
       AssetEntity assetEntity, int size, Widget Function(Uint8List) builder) {
     // Future 가넘어오는 값을 실시간으로 데이터를 바꿔서 위젯을 생성할 때 사용한다. 알고 있지? 단발성으로 사용할 때 쓰는거
-    return FutureBuilder(
-        future: assetEntity.thumbnailDataWithSize(ThumbnailSize(size, size)),
-        builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
+    return FutureBuilder( // Future 를 리턴하는 값을 이용해서 Widget 을 build 한다. 그래서 FutureBuilder
+        // 넣어주는 assetEntity 를 이용하고, thumbnailDataWithSize 함수를 이용하면 돌아오는 값이 Future<Unit8List> 이므로 FutureBuilder 를 이용하면 되는구나.
+        future: assetEntity.thumbnailDataWithSize(ThumbnailSize(size, size)), // 여기가 값을 넣어주는 부분이고
+        builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) { // 여기가 넣어준 값으로 위젯을 만드는 부분이고
           if (snapshot.hasData) {
             return builder(snapshot.data!);
           } else {
