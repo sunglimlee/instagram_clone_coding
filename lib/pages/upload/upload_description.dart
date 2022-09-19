@@ -81,6 +81,15 @@ class UploadDescription extends GetView<UploadController> {
         const Expanded(
             child: TextField(
           maxLines: null,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+            contentPadding: EdgeInsets.only(left: 15),
+            hintText: '문구 입력...',
+          ),
         ))
       ],
     );
