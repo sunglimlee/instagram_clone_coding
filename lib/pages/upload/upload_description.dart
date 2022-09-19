@@ -58,6 +58,11 @@ class UploadDescription extends GetView<UploadController> {
                   line,
                   _infoOnt('사람태그하기'),
                   line,
+                  _infoOnt('위치 추가'),
+                  line,
+                  _infoOnt('다른 미디어에도 게시 '),
+                  line,
+                  snsInfo(),
                 ],
               ),
             ),
@@ -101,14 +106,55 @@ class UploadDescription extends GetView<UploadController> {
   // 이건 알고보니 그냥 getter, setter 잖아. 그냥 이렇게 사용할 수도 있구나.
   Widget get line => const Divider(
         color: Colors.grey,
+        thickness: 1,
       );
 
   Widget _infoOnt(String title) {
     return Padding(
-      padding: const EdgeInsets.all(15.0),
+      padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: Text(
         title,
         style: const TextStyle(fontSize: 17),
+      ),
+    );
+  }
+
+  Widget snsInfo() {
+    return Padding(
+      padding: const EdgeInsets.all(15),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Facebook',
+                style: TextStyle(fontSize: 17),
+              ),
+              Switch(value: false, onChanged: (bool value) {})
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Twitter',
+                style: TextStyle(fontSize: 17),
+              ),
+              Switch(value: false, onChanged: (bool value) {})
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Tumblr',
+                style: TextStyle(fontSize: 17),
+              ),
+              Switch(value: true, onChanged: (bool value) {})
+            ],
+          ),
+        ],
       ),
     );
   }
