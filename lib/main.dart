@@ -7,6 +7,7 @@ import 'package:instagram_clone_coding/firebase_options.dart';
 import 'package:instagram_clone_coding/pages/about_screen.dart';
 import 'package:instagram_clone_coding/pages/home_screen.dart';
 import 'package:instagram_clone_coding/pages/like_screen.dart';
+import 'package:instagram_clone_coding/pages/root.dart';
 import 'package:instagram_clone_coding/pages/search_screen.dart';
 import 'package:instagram_clone_coding/pages/search_screen_detail.dart';
 import 'package:instagram_clone_coding/pages/search_screen_old.dart';
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
           titleTextStyle: TextStyle(color: Colors.black),
         ),
       ),
-      home: App(),
+      home: const Root(),
       initialBinding: InitBindings(),
 /*
       getPages: [

@@ -29,6 +29,13 @@
             {
               "client_id": "815384566673-f8oidrj7fjedrch39lrk25rn75iqefph.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "815384566673-ifcjiep9bv5h2ohjfujq6euh741cf2f2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.instagramCloneCoding"
+              }
             }
           ]
         }
