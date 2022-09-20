@@ -16,4 +16,14 @@ class InstagramUser {
           json['description'] == null ? '' : json['description'] as String,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    // 이 user 데이터를 map 으로 어떻게 바꾸는데?
+    return {
+      'uid': uid,
+      'nickname': nickname,
+      'description': description,
+      'thumbnail': thumbnail,
+    };
+  }
 }

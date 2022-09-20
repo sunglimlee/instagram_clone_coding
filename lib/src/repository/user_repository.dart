@@ -17,4 +17,20 @@ class UserRepository {
       return InstagramUser.fromJson(data.docs.first.data());
     }
   }
+
+  static Future<bool> signupUser(InstagramUser signupUser) async {
+    // 여기서 실제로 데이터 베이스 연결과 업데이트가 이루어진다.
+    // 그런데 여기서 instance 를 계속 만들어줘야하나????? 그냥 하나 만들어놓고 쓰면 안되나? 충돌나나? 그래서인가?
+    // 여기서 보면 map 으로 바뀌어서 저장이 되어야 한다.
+    try {
+      // 헷갈렸다. signupUser 에 이미 변수들이 입력되어있는거잖아.
+      await FirebaseFirestore.instance
+          .collection('users')
+          .add(signupUser.toMap());
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 }
