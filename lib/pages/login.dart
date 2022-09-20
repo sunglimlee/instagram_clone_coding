@@ -12,7 +12,7 @@ class Login extends StatelessWidget {
         centerTitle: true,
         elevation: 0 ,
         title: const Text(
-          '로그인',
+          'Login(로그인)',
           style: TextStyle(color: Colors.black),
         ),
       ),
