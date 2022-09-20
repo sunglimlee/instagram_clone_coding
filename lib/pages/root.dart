@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_clone_coding/controller/auth_controller.dart';
+import 'package:instagram_clone_coding/model/instagram_user.dart';
 import 'package:instagram_clone_coding/pages/login.dart';
+import 'package:instagram_clone_coding/pages/signup_page.dart';
 import 'package:instagram_clone_coding/src/app/app.dart';
 
 class Root extends GetView<AuthController> {
@@ -19,11 +21,19 @@ class Root extends GetView<AuthController> {
       builder: (BuildContext _, AsyncSnapshot<User?> user) {
         if (user.hasData) {
           // TODO 내부 파이어베이스 유저 정보를 조회 with user.data.uid
-          var result = controller.loginUser(user.data!.uid.toString());
-          return FutureBuilder(
+          var result = controller.loginUser(
+              user.data!.uid.toString()); // 여기서 InstagramUser() 객체가 만들어졌다.
+          return FutureBuilder<InstagramUser?>(
+              // 여기서 비교해서 뭔가를 작업하겠다는 거지?
               future: result,
               builder: (context, snapshot) {
-                return const App();
+                // 이제 snapshot 은 InstagramUser() 객체이지
+                // 데이터가 존재하는지 확인하고
+                if (snapshot.hasData) {
+                  return const App();
+                } else {
+                  return const SignupPage();
+                }
               });
         } else {
           return const Login();
