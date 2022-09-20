@@ -7,5 +7,6 @@ class InitBindings extends Bindings {
   @override
   void dependencies() {
     Get.put(BottomNavController(), permanent: true); // 앱이 종료되는 시점까지 컨트롤러가 계속 살아있도록 한다.
+    Get.put(AuthController(), permanent: true);
   }
 }

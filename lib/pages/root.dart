@@ -15,6 +15,7 @@ class Root extends StatelessWidget {
       // Firebase_auth 에서 User 가 자동으로 넘어온다.
       builder: (BuildContext _, AsyncSnapshot<User?> user) {
         if (user.hasData) {
+          // TODO 내부 파이어베이스 유저 정보를 조회 with user.data.uid
           return const App();
         } else {
           return const Login();
