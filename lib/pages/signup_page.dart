@@ -10,6 +10,8 @@ import 'package:instagram_clone_coding/model/instagram_user.dart';
 class SignupPage extends GetView<SignupController> {
   SignupPage({Key? key, required this.uid}) : super(key: key);
   String uid;
+  TextEditingController nickNameController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +56,8 @@ class SignupPage extends GetView<SignupController> {
             //TODO : Validation 작업이 이루어져야 하지..
             var signupUser = InstagramUser(
                 uid: uid,
-                nickname: controller.nickNameController.text,
-                description: controller.descriptionController.text);
+                nickname: nickNameController.text,
+                description: descriptionController.text);
             AuthController.to.signup(signupUser, controller.thumbnailXFile);
           },
           child: const Text('회원가입'),
@@ -99,7 +101,7 @@ class SignupPage extends GetView<SignupController> {
       padding: const EdgeInsets.symmetric(horizontal: 50.0),
       child: TextField(
         // 값을 넣어주는 TextField, Validation 하는것과, Key 값을 가지고 있었다는것 다 기억하지? 그리고 setState,
-        controller: controller.nickNameController,
+        controller: nickNameController,
         decoration: const InputDecoration(
             contentPadding: EdgeInsets.all(10), hintText: '닉네임'),
       ),
@@ -111,7 +113,7 @@ class SignupPage extends GetView<SignupController> {
       padding: const EdgeInsets.symmetric(horizontal: 50.0),
       child: TextField(
         // 값을 넣어주는 TextField, Validation 하는것과, Key 값을 가지고 있었다는것 다 기억하지? 그리고 setState,
-        controller: controller.descriptionController,
+        controller: descriptionController,
         decoration: const InputDecoration(
             contentPadding: EdgeInsets.all(10), hintText: '설명'),
       ),

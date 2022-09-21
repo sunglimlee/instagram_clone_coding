@@ -29,7 +29,11 @@ class UploadDescription extends GetView<UploadController> {
         ),
         actions: [
           GestureDetector(
-            onTap: () {},
+            onTap:
+              // 데이터 저장하고 불러오는기능 구현, FireStore, FirebaseStorage,
+              // 데이터를 접근하는 리파지토리부분을 선정해야 하고,
+              // GetX 로 컨트롤러 만들어서 작업하든 Simple 하게 GetBuilder 넣어서 작업하든지..
+              controller.uploadPost,
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: ImageData(
@@ -48,7 +52,8 @@ class UploadDescription extends GetView<UploadController> {
           child: GestureDetector(
             onTap: () {
               // 현재 body 를 이용해서 GestureDetector 를 감쌌기 때문에 body 안을 눌러야 없어진다.
-              FocusManager.instance.primaryFocus?.unfocus();
+              //FocusManager.instance.primaryFocus?.unfocus();
+              controller.unFocusKeyboard();
             },
             child: SingleChildScrollView(
               child: Column(
@@ -86,10 +91,11 @@ class UploadDescription extends GetView<UploadController> {
             ),
           ),
         ),
-        const Expanded(
+        Expanded(
             child: TextField(
+              controller: controller.textEditingController,
           maxLines: null,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             border: InputBorder.none,
             focusedBorder: InputBorder.none,
             enabledBorder: InputBorder.none,
