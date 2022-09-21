@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone_coding/controller/auth_controller.dart';
 import 'package:instagram_clone_coding/controller/signup_controller.dart';
 import 'package:instagram_clone_coding/model/instagram_user.dart';
@@ -53,7 +56,7 @@ class SignupPage extends GetView<SignupController> {
                 uid: uid,
                 nickname: controller.nickNameController.text,
                 description: controller.descriptionController.text);
-            AuthController.to.signup(signupUser);
+            AuthController.to.signup(signupUser, controller.thumbnailXFile);
           },
           child: const Text('회원가입'),
         ),
@@ -70,13 +73,21 @@ class SignupPage extends GetView<SignupController> {
           child: SizedBox(
             width: 100,
             height: 100,
-            child: Image.asset('assets/images/default_image.png',
-                fit: BoxFit.cover), // 꽉채워준다.
+            // 이부분이 자동으로 바뀌어야 할 것 같은데 그냥 변수만 바뀌는걸로 값을 변경시킨다.?? GetBuilder 사용안하고?
+            child: GetBuilder<SignupController>(builder: (sc) {
+              return sc.thumbnailXFile != null ?
+              Image.file(File(sc.thumbnailXFile!.path), fit: BoxFit.cover,) :
+              Image.asset('assets/images/default_image.png',
+                  fit: BoxFit.cover);
+            }), // 꽉채워준다.
           ),
         ),
         ElevatedButton(
-            onPressed: () {
-              // TODO 이미지 변경하는 부분도 해야함. Firebase Storage 에 저장하고 불러들이는 기능이다.
+            onPressed: () async {
+              // 이미지 변경하는 부분도 해야함. Firebase Storage 에 저장하고 불러들이는 기능이다.
+              var imgXFile = await controller.picker
+                  .pickImage(source: ImageSource.gallery, imageQuality: 30);
+              (imgXFile != null) ? controller.setThumbnailXFile(imgXFile) : print('이미지를 선택하지 않았습니다.');
             },
             child: const Text('이미지 변경'))
       ],

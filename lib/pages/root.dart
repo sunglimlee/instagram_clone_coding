@@ -29,15 +29,21 @@ class Root extends GetView<AuthController> {
               builder: (context, snapshot) {
                 // 이제 snapshot 은 InstagramUser() 객체이지
                 // 데이터가 존재하는지 확인하고
-                if (snapshot.hasData) {
-                  return const App();
-                } else {
-                  // 여기 보면 다 살아있으니깐 여기부분을 자동으로 바꾸는게 가능하네..
-                  // Obx() 를 이용해서 이렇게 User() 정보가 바뀌면 새로운 페이지로 이동하는것 참 좋네.
-                  return Obx(() => controller.user.value.uid != null
-                      ? const App()
-                      : SignupPage(uid: user.data!.uid.toString()));
+                // 여기서 snapshot 의 결과값이 있어야 다음으로 진행시키지.. 이건 마치 그냥 CircularProgressIndicator() 돌리는것 처럼 되었잖아.
+                if (snapshot.connectionState == ConnectionState.done) { // 이문장이 없으면 다음 문장들을 계속 실행한다.
+                  if (snapshot.hasData) {
+                    return const App();
+                  } else {
+                    // 여기 보면 다 살아있으니깐 여기부분을 자동으로 바꾸는게 가능하네..
+                    // Obx() 를 이용해서 이렇게 User() 정보가 바뀌면 새로운 페이지로 이동하는것 참 좋네.
+                    return Obx(() => controller.user.value.uid != null
+                        ? const App()
+                        : SignupPage(uid: user.data!.uid.toString()));
+                  }
                 }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
               });
         } else {
           return const Login();

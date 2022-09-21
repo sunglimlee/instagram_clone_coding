@@ -4,7 +4,7 @@ import 'package:instagram_clone_coding/widgets/image_data.dart';
 import 'package:get/get.dart';
 import 'package:instagram_clone_coding/widgets/user_card.dart';
 import 'package:get/get.dart';
-
+// 맨마지막 페이지잖아.
 class MyPage extends StatefulWidget {
   MyPage({Key? key}) : super(key: key);
 

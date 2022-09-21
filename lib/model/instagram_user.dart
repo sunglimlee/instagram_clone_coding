@@ -26,4 +26,13 @@ class InstagramUser {
       'thumbnail': thumbnail,
     };
   }
+
+  InstagramUser copyWith({String? uid, String? nickname, String? thumbnail, String? description}) {
+     return InstagramUser(
+       uid: uid ?? this.uid,
+       nickname: nickname ?? this.nickname,
+       description: description ?? this.description,
+       thumbnail: thumbnail ?? this.thumbnail,
+     );
+  }
 }

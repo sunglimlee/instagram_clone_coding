@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instagram_clone_coding/model/instagram_user.dart';
 
 class UserRepository {
+  // 값을 확인하는 부분이고
   // async 로 마크 되어 있는건 반드시 Future 로 되어야 한다.
   static Future<InstagramUser?> loginUserByUid(String uid) async {
     // 그냥 FirebaseFirestore 바로 사용하네..
@@ -18,6 +19,7 @@ class UserRepository {
     }
   }
 
+  // 값이 저장되는 부분이고
   static Future<bool> signupUser(InstagramUser signupUser) async {
     // 여기서 실제로 데이터 베이스 연결과 업데이트가 이루어진다.
     // 그런데 여기서 instance 를 계속 만들어줘야하나????? 그냥 하나 만들어놓고 쓰면 안되나? 충돌나나? 그래서인가?
