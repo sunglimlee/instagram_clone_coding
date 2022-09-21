@@ -16,8 +16,8 @@ class AuthController extends GetxController {
     //print(userData);
     //print(uid);
     if (userData != null) { // 로그인이 가능하다는거지..
-      InitBindings.myPagesBinding();
       user(userData);
+      InitBindings.myPagesBinding();
     }
     return userData;
   }

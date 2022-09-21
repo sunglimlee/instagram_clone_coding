@@ -1,25 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone_coding/controller/mypage_controller.dart';
 import 'package:instagram_clone_coding/widgets/avatar_widget.dart';
 import 'package:instagram_clone_coding/widgets/image_data.dart';
 import 'package:get/get.dart';
 import 'package:instagram_clone_coding/widgets/user_card.dart';
-import 'package:get/get.dart';
+
 // 맨마지막 페이지잖아.
-class MyPage extends StatefulWidget {
-  MyPage({Key? key}) : super(key: key);
-
-  @override
-  State<MyPage> createState() => _MyPageState();
-}
-
-class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
-  late TabController tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    tabController = TabController(length: 2, vsync: this);
-  }
+// Stateful 이 아니니깐 문제가 생기네..
+// 초기화는 어디서 할거며, 인터페이스는 어떻게 상속 받을 것인가?
+class MyPage extends GetView<MyPageController> {
+  const MyPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +20,12 @@ class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        title: const Text(
-          '개발하는남자',
-          style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
+        title: Obx(
+          () => Text(
+            controller.targetUser.value.nickname ?? 'Anonymous',
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
+          ),
         ),
         actions: [
           GestureDetector(
@@ -62,7 +54,9 @@ class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
             _information(),
             _menu(),
             _discoverPeople(),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             _tabMenu(),
             _tabView(),
           ],
@@ -98,11 +92,13 @@ class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
           padding: const EdgeInsets.symmetric(horizontal: 0.0),
           child: Row(
             children: [
-              AvatarWidget(
-                thumbPath:
-                    'https://thumbs.dreamstime.com/b/photo-portrait-cheerful-cool-swag-trend-trendy-guy-leaving-his-feedback-social-media-network-using-smart-phone-photo-145377495.jpg',
-                type: AvatarType.TYPE3,
-                size: 80,
+              Obx(
+                () => AvatarWidget(
+                  thumbPath: controller.targetUser.value.thumbnail ??
+                      'https://thumbs.dreamstime.com/b/photo-portrait-cheerful-cool-swag-trend-trendy-guy-leaving-his-feedback-social-media-network-using-smart-phone-photo-145377495.jpg',
+                  type: AvatarType.TYPE3,
+                  size: 80,
+                ),
               ),
               // 오른쪽에 전부다 차지하게 하려면
               Expanded(
@@ -118,17 +114,19 @@ class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Container(
-              color: Colors.transparent,
-              child: const Text(
-                '안녕하세요. Steve 입니다. 구독과 좋아요 부탁드립니다!.~',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Colors.black,
-                ),
-              )),
+        Obx(
+          () => Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Container(
+                color: Colors.transparent,
+                child: Text(
+                  controller.targetUser.value.description ?? '구독과 좋아요 부탁드립니다.',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    color: Colors.black,
+                  ),
+                )),
+          ),
         ),
       ],
     );
@@ -221,7 +219,7 @@ class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
       child: TabBar(
           indicatorColor: Colors.black,
           indicatorWeight: 1,
-          controller: tabController,
+          controller: controller.tabController,
           tabs: [
             Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -240,14 +238,19 @@ class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: 100,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 1, mainAxisSpacing: 1, crossAxisSpacing: 1),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            childAspectRatio: 1,
+            mainAxisSpacing: 1,
+            crossAxisSpacing: 1),
         itemBuilder: (BuildContext context, int index) {
-      return Container(
-        color: Colors.grey,
-        child: Image.network('https://d3544la1u8djza.cloudfront.net/APHI/Blog/2020/05-14/How+Do+Dogs+Get+Hernias+_+ASPCA+Pet+Insurance+_+shiba+inu+with+an+orange+collar+resting+on+a+tan+chair-min.jpg',
-        fit: BoxFit.cover,
-        ),
-      );
+          return Container(
+            color: Colors.grey,
+            child: Image.network(
+              'https://d3544la1u8djza.cloudfront.net/APHI/Blog/2020/05-14/How+Do+Dogs+Get+Hernias+_+ASPCA+Pet+Insurance+_+shiba+inu+with+an+orange+collar+resting+on+a+tan+chair-min.jpg',
+              fit: BoxFit.cover,
+            ),
+          );
         });
   }
 }
