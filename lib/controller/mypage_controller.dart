@@ -24,7 +24,8 @@ class MyPageController extends GetxController with GetTickerProviderStateMixin {
   void setTargetUser() {
     var uid = Get.parameters['targetUid'];
     if (uid == null) {
-      targetUser(AuthController.to.user.value); // 타겟 uid 받아와서 TargetUser 에다가 넣어주었다.
+      targetUser(
+          AuthController.to.user.value); // 타겟 uid 받아와서 TargetUser 에다가 넣어주었다.
     } else {
       // TODO 상대 uid 로 users collection 을 조회해서 그걸 targetUser 에 담아주면 된다.
     }

@@ -21,6 +21,8 @@ class Root extends GetView<AuthController> {
       builder: (BuildContext _, AsyncSnapshot<User?> user) {
         if (user.hasData) {
           // TODO 내부 파이어베이스 유저 정보를 조회 with user.data.uid
+          //print(user);
+          print('-------------');
           var result = controller.loginUser(
               user.data!.uid.toString()); // 여기서 InstagramUser() 객체가 만들어졌다.
           return FutureBuilder<InstagramUser?>(
@@ -36,6 +38,7 @@ class Root extends GetView<AuthController> {
                   } else {
                     // 여기 보면 다 살아있으니깐 여기부분을 자동으로 바꾸는게 가능하네..
                     // Obx() 를 이용해서 이렇게 User() 정보가 바뀌면 새로운 페이지로 이동하는것 참 좋네.
+                    print('-------------');
                     return Obx(() => controller.user.value.uid != null
                         ? const App()
                         : SignupPage(uid: user.data!.uid.toString()));

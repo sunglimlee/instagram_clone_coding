@@ -15,7 +15,8 @@ class AuthController extends GetxController {
     var userData = await UserRepository.loginUserByUid(uid);
     //print(userData);
     //print(uid);
-    if (userData != null) { // 로그인이 가능하다는거지..
+    if (userData != null) {
+      // 로그인이 가능하다는거지..
       user(userData);
       InitBindings.myPagesBinding();
     }
@@ -26,12 +27,16 @@ class AuthController extends GetxController {
     // 먼저 사진업로드를 먼저한다. 여기서보자. 사진을 업로드하면서 uid 를 같이 올리는지.. 그말은 하나만 올라간다는 거다.
     if (thumbnailXFile == null) {
       _submitSignup(signupUser);
-    } else { // 사진이 있다면
-      var extension = thumbnailXFile.path.split('.').last; // 점이 두개 있을 수도있으니깐 last 가 맞지.
-      UploadTask uploadTask = _uploadXFile(thumbnailXFile, '${signupUser.uid.toString()}/profile.$extension');
+    } else {
+      // 사진이 있다면
+      var extension =
+          thumbnailXFile.path.split('.').last; // 점이 두개 있을 수도있으니깐 last 가 맞지.
+      UploadTask uploadTask = _uploadXFile(
+          thumbnailXFile, '${signupUser.uid.toString()}/profile.$extension');
       uploadTask.snapshotEvents.listen((event) async {
         print(event.bytesTransferred); // 올라간 바이트 값을 듣고 있다가 찍어준다.
-        if (event.bytesTransferred == event.totalBytes && event.state == TaskState.success) {
+        if (event.bytesTransferred == event.totalBytes &&
+            event.state == TaskState.success) {
           // 이미지 파일이 전부다 업로드가 되었다면
           var downloadUrl = await event.ref.getDownloadURL();
           // 이렇게 복사를 하는 이유는 기존건 그대로 두고 사진파일만 있는 걸로 다시 객체를 하나 더 만든다고 생각하면 된다.
@@ -49,17 +54,19 @@ class AuthController extends GetxController {
     var result = await UserRepository.signupUser(signupUser);
     if (result == true) {
       // signup 이 되었다는 뜻
-      user(signupUser); // 컨트롤러의 user 객체에다가 signupUser 객체를 담아준다. // 여기 값을 넣는것 생소하지만 알고 있지??
+      user(
+          signupUser); // 컨트롤러의 user 객체에다가 signupUser 객체를 담아준다. // 여기 값을 넣는것 생소하지만 알고 있지??
       loginUser(signupUser.uid!);
     }
-
   }
 
   UploadTask _uploadXFile(XFile thumbnailXFile, String filename) {
     // 실제로 FireStore 에 저장하는 부분
     var f = File(thumbnailXFile.path);
     var ref = FirebaseStorage.instance.ref().child('users').child(filename);
-    final metadata = SettableMetadata(contentType: 'image/jpeg', customMetadata: {'picked-file-path': thumbnailXFile.path});
+    final metadata = SettableMetadata(
+        contentType: 'image/jpeg',
+        customMetadata: {'picked-file-path': thumbnailXFile.path});
     return ref.putFile(f, metadata);
   }
 }

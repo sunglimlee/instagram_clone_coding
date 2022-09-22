@@ -30,7 +30,7 @@ class Post {
         thumbnail: json['thumbnail'] == '' ? null : json['thumbnail'] as String,
         description:
             json['description'] == '' ? null : json['description'] as String,
-        likeCount: json['likeCount'] == 0 ? null : json['likeCount'] as int,
+        likeCount: json['likeCount'] == null ? null : json['likeCount'] as int,
         userInfo: json['userInfo'] == null
             ? null
             : InstagramUser.fromJson(json['userInfo']),

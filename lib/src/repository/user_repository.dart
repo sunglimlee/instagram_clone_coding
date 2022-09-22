@@ -13,7 +13,7 @@ class UserRepository {
     if (data.size == 0) {
       return null;
     } else {
-      print(data.docs.first.data());
+      //print(data.docs.first.data()); // 이부분인데 에러인줄 알았잖아..!!!!!
       // 헷갈리지 말자. 먼저 파이어스토어에서 확인하고 나서 값이 있으면 InstagramUser() 객체를 넘겨준다.
       return InstagramUser.fromJson(data.docs.first.data());
     }
